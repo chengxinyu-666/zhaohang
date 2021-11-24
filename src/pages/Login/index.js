@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:33:41
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-24 09:52:23
+ * @LastEditTime: 2021-11-24 11:09:55
  */
 /*
  * @Author: chengxinyu
@@ -12,14 +12,17 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, message } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { encrypt } from '@/utils/password';
+import { cookie, urlGet } from 'project-libs';
+import { history } from 'umi';
 import './index.less';
 
 import request from 'umi-request';
 
 export default function (props) {
+  console.log(cookie.get('user'));
   let onFinish = async (values) => {
     const { username, password } = values;
     let data = {
@@ -34,6 +37,13 @@ export default function (props) {
       })
       .then(function (res) {
         console.log(res);
+        if (res.code == 200) {
+          cookie.set('user', res.data.userId);
+          message.info('登录成功！');
+          history.push('./home');
+        } else {
+          message.info(res.message);
+        }
       })
       .catch(function (error) {
         console.log(error);

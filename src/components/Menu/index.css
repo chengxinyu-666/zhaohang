@@ -1,0 +1,10 @@
+.logo {
+  background-color: #00284d;
+  width: 100%;
+}
+.logo h2 {
+  line-height: 67px;
+  text-align: center;
+  cursor: pointer;
+  color: white;
+}
