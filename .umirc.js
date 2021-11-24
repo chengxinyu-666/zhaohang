@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:11:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-23 18:16:37
+ * @LastEditTime: 2021-11-24 09:42:57
  */
 import { defineConfig } from 'umi';
 
@@ -16,14 +16,13 @@ export default defineConfig({
     '/campus': {
       target: 'http://cmb.beyondsofthz.com',
       changeOrigin: true,
-      // pathRewrite: { '^/rate': '' },
     },
   },
 
   routes: [
     {
       path: '/',
-      component: '@/pages/index',
+      component: './login/index',
     },
 
     {

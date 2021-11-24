@@ -2,7 +2,13 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:33:41
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-23 18:39:17
+ * @LastEditTime: 2021-11-24 09:52:23
+ */
+/*
+ * @Author: chengxinyu
+ * @Date: 2021-11-23 11:33:41
+ * @LastEditors: chengxinyu
+ * @LastEditTime: 2021-11-24 09:49:40
  */
 
 import React, { useState, useEffect } from 'react';
@@ -11,28 +17,9 @@ import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import { encrypt } from '@/utils/password';
 import './index.less';
 
-import { extend } from 'umi-request';
-//  import Http from '@/utils/server'
 import request from 'umi-request';
 
 export default function (props) {
-  // const [state, setState] = useState()
-
-  const request = extend({
-    prefix: 'http://cmb.beyondsofthz.com/campus/campusweb',
-    suffix: '.json',
-    timeout: 1000,
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-    params: {
-      //   token: "xxx" // 所有请求默认带上 token 参数
-    },
-    errorHandler: function (error) {
-      /* 异常处理 */
-    },
-  });
-
   let onFinish = async (values) => {
     const { username, password } = values;
     let data = {
@@ -41,10 +28,8 @@ export default function (props) {
     };
     console.log(data);
 
-    // let header=['authorization',null]
-    //    const {data: res} = await Http.post('/ipuser/login',data,header)
     request
-      .post('/ipuser/login', {
+      .post('/campus/campusweb/ipuser/login', {
         data,
       })
       .then(function (res) {
