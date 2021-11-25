@@ -2,21 +2,16 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 19:11:33
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 19:52:30
+ * @LastEditTime: 2021-11-25 20:40:51
  */
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Select, DatePicker, Row, Col } from 'antd';
+import Table from '../Table';
+// import Http from '@/utils/http';
+import request from 'umi-request';
 export default function (props) {
   const [actitem, setActitem] = useState(0);
-  const { Option } = Select;
-  const layout = {
-    labelCol: {
-      span: 4,
-    },
-    wrapperCol: {
-      span: 4,
-    },
-  };
+
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
@@ -30,13 +25,32 @@ export default function (props) {
     console.log(date, dateString);
   }
 
-  const Tablist = ['全部', '待审核', '进行中', '未开始', '已驳回', '已结束'];
+  const Tablist = [
+    '全部',
+    '进行中',
+    '未开始',
+    '已结束',
+    '待审核',
+    '已驳回',
+    '草稿箱',
+  ];
 
   function addClick(idx) {
     setActitem(idx);
   }
 
-  useEffect(() => {}, []);
+  function tableDateFun() {
+    let data = {};
+    request
+      .post('/campus/campusweb/activity/pageConditionQueryByCreatorId', {
+        page: '1',
+        pageSize: '1',
+      })
+      .then(function (res) {
+        console.log(55, res);
+      });
+  }
+  tableDateFun();
 
   return (
     <div className="Tablefilter">
@@ -90,6 +104,7 @@ export default function (props) {
           </Row>
         </Form>
       </div>
+      <Table></Table>
     </div>
   );
 }
