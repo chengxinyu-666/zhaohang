@@ -1,183 +1,159 @@
-/*
- * @Author: chengxinyu
- * @Date: 2021-11-24 18:53:31
- * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-24 18:53:31
- */
-import React, { useState } from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Typography } from 'antd';
-const originData = [];
+import React, { useState, useEffect } from 'react';
+import { Table, Button, Space } from 'antd';
+import '../index.less';
+const data = [
+  {
+    key: '1',
+    active_name: '活动名称',
+    creator: '创建人',
+    creation_time: '2020-1-1',
+    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
+    active_state: '待审核',
+  },
+  {
+    key: '2',
+    active_name: '活动名称',
+    creator: '创建人',
+    creation_time: '2020-1-1',
+    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
+    active_state: '待审核',
+  },
+  {
+    key: '3',
+    active_name: '活动名称',
+    creator: '创建人',
+    creation_time: '2020-1-1',
+    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
+    active_state: '待审核',
+  },
+  {
+    key: '4',
+    active_name: '活动名称',
+    creator: '创建人',
+    creation_time: '2020-1-1',
+    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
+    active_state: '待审核',
+  },
+];
 
-for (let i = 0; i < 100; i++) {
-  originData.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
+class App extends React.Component {
+  state = {
+    filteredInfo: null,
+    sortedInfo: null,
+  };
+
+  handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination, filters, sorter);
+    this.setState({
+      filteredInfo: filters,
+      sortedInfo: sorter,
+    });
+  };
+
+  clearFilters = () => {
+    this.setState({ filteredInfo: null });
+  };
+
+  clearAll = () => {
+    this.setState({
+      filteredInfo: null,
+      sortedInfo: null,
+    });
+  };
+
+  setAgeSort = () => {
+    this.setState({
+      sortedInfo: {
+        order: 'descend',
+        columnKey: 'age',
+      },
+    });
+  };
+
+  render() {
+    let { sortedInfo, filteredInfo } = this.state;
+    sortedInfo = sortedInfo || {};
+    filteredInfo = filteredInfo || {};
+    const columns = [
+      {
+        title: '活动名称',
+        dataIndex: 'active_name',
+        key: 'active_name',
+        ellipsis: true,
+        // width:260,
+        align: 'right',
+        className: 'fs',
+      },
+      {
+        title: '创建人',
+        dataIndex: 'creator',
+        key: 'creator',
+        ellipsis: true,
+        // width:180,
+        align: 'center',
+        className: 'fs',
+      },
+      {
+        title: '创建时间',
+        dataIndex: 'creation_time',
+        key: 'creation_time',
+
+        onFilter: (value, record) => record.creation_time.includes(value),
+        sorter: (a, b) => a.creation_time.length - b.creation_time.length,
+        sortOrder: sortedInfo.columnKey === 'creation_time' && sortedInfo.order,
+        ellipsis: true,
+        // width:180,
+        align: 'center',
+        className: 'fs',
+      },
+      {
+        title: '活动时间',
+        dataIndex: 'active_time',
+        key: 'active_time',
+
+        onFilter: (value, record) => record.active_time.includes(value),
+        sorter: (a, b) => a.active_time.length - b.active_time.length,
+        sortOrder: sortedInfo.columnKey === 'active_time' && sortedInfo.order,
+        ellipsis: true,
+        // width:380,
+        align: 'center',
+        className: 'fs',
+      },
+      {
+        title: '状态',
+        dataIndex: 'active_state',
+        key: 'active_state',
+        // width:180,
+        align: 'center',
+        className: 'fs',
+        // ellipsis: true,
+      },
+      {
+        title: '操作',
+        dataIndex: 'key',
+        key: 'key',
+        render: () => (
+          <div>
+            <a> 详情</a> <a>通过</a> <a>驳回</a>
+          </div>
+        ),
+        ellipsis: true,
+        className: 'fs',
+        align: 'center',
+      },
+    ];
+    return (
+      <>
+        <Table
+          columns={columns}
+          bordered={false}
+          dataSource={data}
+          onChange={this.handleChange}
+        />
+      </>
+    );
+  }
 }
 
-const EditableCell = ({
-  editing,
-  dataIndex,
-  title,
-  inputType,
-  record,
-  index,
-  children,
-  ...restProps
-}) => {
-  const inputNode = inputType === 'number' ? <InputNumber /> : <Input />;
-  return (
-    <td {...restProps}>
-      {editing ? (
-        <Form.Item
-          name={dataIndex}
-          style={{
-            margin: 0,
-          }}
-          rules={[
-            {
-              required: true,
-              message: `Please Input ${title}!`,
-            },
-          ]}
-        >
-          {inputNode}
-        </Form.Item>
-      ) : (
-        children
-      )}
-    </td>
-  );
-};
-
-const EditableTable = () => {
-  const [form] = Form.useForm();
-  const [data, setData] = useState(originData);
-  const [editingKey, setEditingKey] = useState('');
-
-  const isEditing = (record) => record.key === editingKey;
-
-  const edit = (record) => {
-    form.setFieldsValue({
-      name: '',
-      age: '',
-      address: '',
-      ...record,
-    });
-    setEditingKey(record.key);
-  };
-
-  const cancel = () => {
-    setEditingKey('');
-  };
-
-  const save = async (key) => {
-    try {
-      const row = await form.validateFields();
-      const newData = [...data];
-      const index = newData.findIndex((item) => key === item.key);
-
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, { ...item, ...row });
-        setData(newData);
-        setEditingKey('');
-      } else {
-        newData.push(row);
-        setData(newData);
-        setEditingKey('');
-      }
-    } catch (errInfo) {
-      console.log('Validate Failed:', errInfo);
-    }
-  };
-
-  const columns = [
-    {
-      title: 'name',
-      dataIndex: 'name',
-      width: '25%',
-      editable: true,
-    },
-    {
-      title: 'age',
-      dataIndex: 'age',
-      width: '15%',
-      editable: true,
-    },
-    {
-      title: 'address',
-      dataIndex: 'address',
-      width: '40%',
-      editable: true,
-    },
-    {
-      title: 'operation',
-      dataIndex: 'operation',
-      render: (_, record) => {
-        const editable = isEditing(record);
-        return editable ? (
-          <span>
-            <a
-              href="javascript:;"
-              onClick={() => save(record.key)}
-              style={{
-                marginRight: 8,
-              }}
-            >
-              Save
-            </a>
-            <Popconfirm title="Sure to cancel?" onConfirm={cancel}>
-              <a>Cancel</a>
-            </Popconfirm>
-          </span>
-        ) : (
-          <Typography.Link
-            disabled={editingKey !== ''}
-            onClick={() => edit(record)}
-          >
-            Edit
-          </Typography.Link>
-        );
-      },
-    },
-  ];
-  const mergedColumns = columns.map((col) => {
-    if (!col.editable) {
-      return col;
-    }
-
-    return {
-      ...col,
-      onCell: (record) => ({
-        record,
-        inputType: col.dataIndex === 'age' ? 'number' : 'text',
-        dataIndex: col.dataIndex,
-        title: col.title,
-        editing: isEditing(record),
-      }),
-    };
-  });
-  return (
-    <Form form={form} component={false}>
-      <Table
-        components={{
-          body: {
-            cell: EditableCell,
-          },
-        }}
-        bordered
-        dataSource={data}
-        columns={mergedColumns}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: cancel,
-        }}
-      />
-    </Form>
-  );
-};
-
-ReactDOM.render(<EditableTable />, mountNode);
+export default App;
+// ReactDOM.render(< />, mountNode);
