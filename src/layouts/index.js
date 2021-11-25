@@ -2,24 +2,32 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:34:44
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-24 17:35:59
+ * @LastEditTime: 2021-11-25 16:50:53
  */
 
+import React, { useState, useEffect } from 'react';
 import { Menu } from '@/components';
 import './index.less';
-import { StoreProvider } from 'think-react-store';
-import * as store from '../stores';
+import { useLocation } from 'umi';
+
 function BasicLayout(props) {
+  const location = useLocation();
+
+  const paths = ['/login'];
+
   return (
-    <StoreProvider store={store}>
+    <div>
       <div className="lay">
         <div className="left_container">
-          <Menu></Menu>
+          <Menu
+            show={paths.includes(location.pathname)}
+            pathname={location.pathname}
+          ></Menu>
         </div>
 
         <div className="right_container">{props.children}</div>
       </div>
-    </StoreProvider>
+    </div>
   );
 }
 

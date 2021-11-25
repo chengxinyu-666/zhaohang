@@ -2,13 +2,14 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:53:32
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 10:29:42
+ * @LastEditTime: 2021-11-25 19:23:01
  */
 import React, { useState, useEffect } from 'react';
 import { Layout, Select } from 'antd';
 
 import Acticetable from './Acticetable';
 import HomeHeader from './Homeheader';
+import Tablefilter from './Tablefilter';
 import './index.less';
 const { Header, Content } = Layout;
 export default function (props) {
@@ -31,7 +32,8 @@ export default function (props) {
               minHeight: 360,
             }}
           >
-            活动管理
+            <Tablefilter></Tablefilter>
+
             <Acticetable></Acticetable>
           </div>
         </Content>

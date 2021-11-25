@@ -3,7 +3,6 @@
   display: flex;
 }
 .lay .left_container {
-  width: 200px;
   height: 100vh;
 }
 .lay .right_container {
