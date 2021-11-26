@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 12:59:15
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 18:04:22
+ * @LastEditTime: 2021-11-26 14:01:45
  */
 
 import React, { Component } from 'react';
@@ -43,7 +43,7 @@ export default class Demo extends Component {
   render() {
     const { show, pathname } = this.props;
     const { menulist, seconelist } = this.state;
-    console.log(6, menulist);
+    // console.log(6, menulist);
     return (
       <div className="menu" hidden={show}>
         <Layout>

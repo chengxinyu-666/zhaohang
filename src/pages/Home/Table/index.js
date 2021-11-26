@@ -1,159 +1,159 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
 import '../index.less';
-const data = [
-  {
-    key: '1',
-    active_name: '活动名称',
-    creator: '创建人',
-    creation_time: '2020-1-1',
-    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
-    active_state: '待审核',
-  },
-  {
-    key: '2',
-    active_name: '活动名称',
-    creator: '创建人',
-    creation_time: '2020-1-1',
-    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
-    active_state: '待审核',
-  },
-  {
-    key: '3',
-    active_name: '活动名称',
-    creator: '创建人',
-    creation_time: '2020-1-1',
-    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
-    active_state: '待审核',
-  },
-  {
-    key: '4',
-    active_name: '活动名称',
-    creator: '创建人',
-    creation_time: '2020-1-1',
-    active_time: '2010-10-10 08:50 ~ 2010-10-10 08:50',
-    active_state: '待审核',
-  },
-];
-
-class App extends React.Component {
-  state = {
+export default function (props) {
+  const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
-  };
+  });
+  console.log(2, props);
+  // state = {
+  //   filteredInfo: null,
+  //   sortedInfo: null,
+  // };
+  const columns = [
+    {
+      title: '活动名称',
+      dataIndex: 'activityName',
+      key: 'activityName',
+      ellipsis: true,
+      align: 'center',
+      className: 'fs',
+    },
+    {
+      title: '创建人',
+      dataIndex: 'activityOrganizers',
+      key: 'id',
+      ellipsis: true,
+      align: 'center',
+      className: 'fs',
+    },
+    {
+      title: '创建时间',
+      dataIndex: 'startDate',
+      key: 'id',
 
-  handleChange = (pagination, filters, sorter) => {
-    console.log('Various parameters', pagination, filters, sorter);
-    this.setState({
+      // onFilter: (value, record) => record.startDate.includes(value),
+      // sorter: (a, b) => a.startDate.length - b.startDate.length,
+      // sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
+      ellipsis: true,
+      align: 'center',
+      className: 'fs',
+    },
+    {
+      title: '活动时间',
+      dataIndex: 'startDate',
+      key: 'startDate',
+
+      // onFilter: (value, record) => record.startDate.includes(value),
+      // sorter: (a, b) => a.startDate.length - b.startDate.length,
+      // sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
+      ellipsis: true,
+      align: 'center',
+      className: 'fs',
+    },
+    {
+      title: '状态',
+      dataIndex: 'activityStatus',
+      key: 'activityStatus',
+      align: 'center',
+      className: 'fs',
+      ellipsis: true,
+      render: (activityStatus) => (
+        <>
+          {activityStatus == 1 ? <a className="green">待审核</a> : ''}
+          {activityStatus == 2 ? <a className="purple">进行中</a> : ''}
+          {activityStatus == 3 ? <a className="grey">未开始</a> : ''}
+          {activityStatus == 4 ? <a className="red">已驳回</a> : ''}
+          {activityStatus == 5 ? <a className="grey"> 草稿</a> : ''}
+          {activityStatus == 6 ? <a className="grey">已结束</a> : ''}
+        </>
+      ),
+    },
+    {
+      title: '操作',
+      dataIndex: 'activityStatus',
+      key: 'id',
+      render: (activityStatus) => (
+        <>
+          {activityStatus == 1 ? <a>详情</a> : ''}
+          {activityStatus == 2 ? (
+            <>
+              <a>详情</a>
+              <a>关闭</a>
+            </>
+          ) : (
+            ''
+          )}
+          {activityStatus == 3 ? (
+            <>
+              <a>详情</a>{' '}
+            </>
+          ) : (
+            ''
+          )}
+          {activityStatus == 4 ? (
+            <>
+              <a>详情</a>
+              <a>重新发布</a>
+              <a>删除</a>
+            </>
+          ) : (
+            ''
+          )}
+          {activityStatus == 5 ? (
+            <>
+              <a>详情</a>
+              <a>删除</a>
+            </>
+          ) : (
+            ''
+          )}
+          {activityStatus == 6 ? (
+            <>
+              <a>详情</a>
+              <a>删除</a>
+            </>
+          ) : (
+            ''
+          )}
+        </>
+      ),
+      ellipsis: true,
+      className: 'fs',
+      align: 'center',
+    },
+  ];
+
+  const handleChange = (pagination, filters, sorter) => {
+    console.log('Various parameters', pagination.current, filters, sorter);
+    setState({
       filteredInfo: filters,
       sortedInfo: sorter,
     });
   };
+  useEffect(() => {}, []);
+  const { tabledate } = props;
 
-  clearFilters = () => {
-    this.setState({ filteredInfo: null });
-  };
-
-  clearAll = () => {
-    this.setState({
-      filteredInfo: null,
-      sortedInfo: null,
-    });
-  };
-
-  setAgeSort = () => {
-    this.setState({
-      sortedInfo: {
-        order: 'descend',
-        columnKey: 'age',
-      },
-    });
-  };
-
-  render() {
-    let { sortedInfo, filteredInfo } = this.state;
-    sortedInfo = sortedInfo || {};
-    filteredInfo = filteredInfo || {};
-    const columns = [
-      {
-        title: '活动名称',
-        dataIndex: 'active_name',
-        key: 'active_name',
-        ellipsis: true,
-        // width:260,
-        align: 'right',
-        className: 'fs',
-      },
-      {
-        title: '创建人',
-        dataIndex: 'creator',
-        key: 'creator',
-        ellipsis: true,
-        // width:180,
-        align: 'center',
-        className: 'fs',
-      },
-      {
-        title: '创建时间',
-        dataIndex: 'creation_time',
-        key: 'creation_time',
-
-        onFilter: (value, record) => record.creation_time.includes(value),
-        sorter: (a, b) => a.creation_time.length - b.creation_time.length,
-        sortOrder: sortedInfo.columnKey === 'creation_time' && sortedInfo.order,
-        ellipsis: true,
-        // width:180,
-        align: 'center',
-        className: 'fs',
-      },
-      {
-        title: '活动时间',
-        dataIndex: 'active_time',
-        key: 'active_time',
-
-        onFilter: (value, record) => record.active_time.includes(value),
-        sorter: (a, b) => a.active_time.length - b.active_time.length,
-        sortOrder: sortedInfo.columnKey === 'active_time' && sortedInfo.order,
-        ellipsis: true,
-        // width:380,
-        align: 'center',
-        className: 'fs',
-      },
-      {
-        title: '状态',
-        dataIndex: 'active_state',
-        key: 'active_state',
-        // width:180,
-        align: 'center',
-        className: 'fs',
-        // ellipsis: true,
-      },
-      {
-        title: '操作',
-        dataIndex: 'key',
-        key: 'key',
-        render: () => (
-          <div>
-            <a> 详情</a> <a>通过</a> <a>驳回</a>
-          </div>
-        ),
-        ellipsis: true,
-        className: 'fs',
-        align: 'center',
-      },
-    ];
-    return (
-      <>
+  return (
+    <div>
+      <Button
+        // hidden={actitem!=0}
+        type="primary"
+      >
+        +创建活动
+      </Button>
+      {tabledate ? (
         <Table
           columns={columns}
           bordered={false}
-          dataSource={data}
-          onChange={this.handleChange}
+          dataSource={tabledate.rows}
+          onChange={handleChange}
+          rowKey="id"
         />
-      </>
-    );
-  }
+      ) : (
+        <></>
+      )}
+    </div>
+  );
 }
-
-export default App;
-// ReactDOM.render(< />, mountNode);

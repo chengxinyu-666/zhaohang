@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-19 16:52:10
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-24 16:12:47
+ * @LastEditTime: 2021-11-26 16:17:10
  */
 
 export default function Http({
@@ -10,11 +10,8 @@ export default function Http({
   method = 'post',
   headers,
   body = {},
-  setLoading,
   setResult,
 }) {
-  setLoading && setLoading(true);
-
   const defaultHeader = {
     'Content-type': 'application/json',
   };
@@ -37,13 +34,10 @@ export default function Http({
     fetch('/campus/campusweb' + url, params)
       .then((res) => res.json())
       .then((res) => {
-        // console.log(res);
         if (res.code === 200) {
           resolve(res.data);
           setResult && setResult(res.data);
         } else {
-          //  console.log(res.errMsg)
-          // Toast.fail(res.errMsg);
           reject(res.errMsg);
         }
       })
@@ -52,8 +46,6 @@ export default function Http({
         console.log(err);
         reject(err);
       })
-      .finally(() => {
-        setLoading && setLoading(false);
-      });
+      .finally(() => {});
   });
 }

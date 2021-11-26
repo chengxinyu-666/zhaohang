@@ -2,17 +2,27 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 19:11:33
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 20:40:51
+ * @LastEditTime: 2021-11-26 16:25:05
  */
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Button, Select, DatePicker, Row, Col } from 'antd';
 import Table from '../Table';
-// import Http from '@/utils/http';
-import request from 'umi-request';
+import { useHttpHook } from '@/hooks';
+import { CommonEnum } from '@/enums';
 export default function (props) {
+  const [page, setPage] = useState(CommonEnum.PAGE);
   const [actitem, setActitem] = useState(0);
-
   const [form] = Form.useForm();
+
+  const [tabledate] = useHttpHook({
+    url: '/activity/pageConditionQueryByCreatorId',
+    body: {
+      ...page,
+    },
+    watch: [page.pageNum],
+  });
+
+  console.log('父级tabledate', tabledate);
 
   const onFinish = (values) => {
     console.log(values);
@@ -24,33 +34,39 @@ export default function (props) {
   function onChange(date, dateString) {
     console.log(date, dateString);
   }
-
   const Tablist = [
-    '全部',
-    '进行中',
-    '未开始',
-    '已结束',
-    '待审核',
-    '已驳回',
-    '草稿箱',
+    {
+      title: '全部',
+      activityStatus: '0',
+    },
+    {
+      title: '进行中',
+      activityStatus: '2',
+    },
+    {
+      title: '未开始',
+      activityStatus: '3',
+    },
+    {
+      title: '已结束',
+      activityStatus: '6',
+    },
+    {
+      title: '待审核',
+      activityStatus: '1',
+    },
+    {
+      title: '已驳回',
+      activityStatus: '4',
+    },
+    {
+      title: '草稿箱',
+      activityStatus: '5',
+    },
   ];
-
-  function addClick(idx) {
+  function changeItem(idx) {
     setActitem(idx);
   }
-
-  function tableDateFun() {
-    let data = {};
-    request
-      .post('/campus/campusweb/activity/pageConditionQueryByCreatorId', {
-        page: '1',
-        pageSize: '1',
-      })
-      .then(function (res) {
-        console.log(55, res);
-      });
-  }
-  tableDateFun();
 
   return (
     <div className="Tablefilter">
@@ -60,10 +76,10 @@ export default function (props) {
             return (
               <li key={idx}>
                 <a
-                  className={idx == actitem ? 'acta' : ''}
-                  onClick={addClick.bind(this, idx)}
+                  className={item.activityStatus == actitem ? 'acta' : ''}
+                  onClick={changeItem.bind(this, item.activityStatus)}
                 >
-                  {item}
+                  {item.title}
                 </a>
               </li>
             );
@@ -104,7 +120,7 @@ export default function (props) {
           </Row>
         </Form>
       </div>
-      <Table></Table>
+      <Table tabledate={tabledate} Tablist={Tablist} actitem={actitem}></Table>
     </div>
   );
 }
