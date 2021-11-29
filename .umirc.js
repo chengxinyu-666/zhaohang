@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:11:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-29 12:47:27
+ * @LastEditTime: 2021-11-29 17:33:35
  */
 import { defineConfig } from 'umi';
 
@@ -39,6 +39,12 @@ export default defineConfig({
           path: '/createActivity',
           component: './createActivity/index',
           title: '首页',
+          auth: true,
+        },
+        {
+          path: '/addactivity',
+          component: './Addactivity/index',
+          title: '创建活动',
           auth: true,
         },
         {

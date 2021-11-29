@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
+import { history } from 'umi';
 import '../index.less';
 export default function (props) {
   const [state, setState] = useState({
@@ -150,11 +151,16 @@ export default function (props) {
     });
   };
   useEffect(() => {}, []);
+
+  const goAddactivity = () => {
+    history.push('/addActivity');
+  };
+
   const { tabledate } = props;
 
   return (
     <div>
-      <Button hidden={props.actitem != 0} type="primary">
+      <Button type="primary" onClick={goAddactivity}>
         +创建活动
       </Button>
       {tabledate ? (
