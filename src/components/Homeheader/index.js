@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 10:26:54
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 14:13:33
+ * @LastEditTime: 2021-11-29 13:37:35
  */
 import React, { useState, useEffect } from 'react';
 import {
@@ -64,16 +64,15 @@ export default function (props) {
       <div className="head_top1">
         <div className="bride">
           {/* 预留面包屑导航 */}
-          {/* <Breadcrumb>
-                        <Breadcrumb.Item>Ant Design</Breadcrumb.Item>
-                        <Breadcrumb.Item>
+          <Breadcrumb>
+            <Breadcrumb.Item>活动管理</Breadcrumb.Item>
+            {/* <Breadcrumb.Item>
                             <a href="">Component</a>
                         </Breadcrumb.Item>
                         <Breadcrumb.Item>
                             <a href="">General</a>
-                        </Breadcrumb.Item>
-                        <Breadcrumb.Item>Button</Breadcrumb.Item>
-                    </Breadcrumb> */}
+                        </Breadcrumb.Item>  */}
+          </Breadcrumb>
         </div>
         <div className="header_login">
           {cookie.get('user') ? (
@@ -93,7 +92,7 @@ export default function (props) {
         </div>
       </div>
       <div className="head_top2">
-        <h3>活动管理</h3>
+        {/* <h3>活动管理</h3> */}
         <h2>活动管理</h2>
       </div>
     </div>

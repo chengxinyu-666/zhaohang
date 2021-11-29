@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:11:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-24 12:31:00
+ * @LastEditTime: 2021-11-29 12:47:27
  */
 import { defineConfig } from 'umi';
 
@@ -26,7 +26,7 @@ export default defineConfig({
       routes: [
         {
           path: '/',
-          component: './home/index',
+          component: './createActivity/index',
           title: '首页',
           auth: true,
         },
@@ -36,9 +36,21 @@ export default defineConfig({
           title: '登录',
         },
         {
-          path: '/home',
-          component: './home/index',
+          path: '/createActivity',
+          component: './createActivity/index',
           title: '首页',
+          auth: true,
+        },
+        {
+          path: '/activityComment',
+          component: './activityComment/index',
+          title: '活动评论',
+          auth: true,
+        },
+        {
+          path: '/lotteryWhiteList',
+          component: './lotteryWhiteList/index',
+          title: '抽奖白名单',
           auth: true,
         },
       ],

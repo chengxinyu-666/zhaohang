@@ -2,11 +2,11 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:34:44
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 16:50:53
+ * @LastEditTime: 2021-11-29 17:29:01
  */
 
 import React, { useState, useEffect } from 'react';
-import { Menu } from '@/components';
+import { Menu, HomeHeader } from '@/components';
 import './index.less';
 import { useLocation } from 'umi';
 
@@ -25,7 +25,10 @@ function BasicLayout(props) {
           ></Menu>
         </div>
 
-        <div className="right_container">{props.children}</div>
+        <div className="right_container">
+          <HomeHeader></HomeHeader>
+          {props.children}
+        </div>
       </div>
     </div>
   );

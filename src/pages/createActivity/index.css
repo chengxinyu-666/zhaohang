@@ -1,0 +1,33 @@
+.fs {
+  font-size: 18px;
+}
+.Tablefilter .Tablefilter1 ul {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  padding: 0;
+}
+.Tablefilter .Tablefilter1 ul li a {
+  color: #999999;
+  font-size: 16px;
+  width: 70px;
+  display: inline-block;
+  line-height: 30px;
+}
+.Tablefilter .Tablefilter1 ul li .acta {
+  color: #333333;
+  font-size: 20px;
+  font-weight: 800;
+}
+.green {
+  color: #3da898;
+}
+.purple {
+  color: #913ffc;
+}
+.grey {
+  color: #c6c6c7;
+}
+.red {
+  color: #fe616e;
+}

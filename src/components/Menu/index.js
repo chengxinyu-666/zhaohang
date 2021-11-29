@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 12:59:15
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-26 14:01:45
+ * @LastEditTime: 2021-11-29 11:47:32
  */
 
 import React, { Component } from 'react';
@@ -11,6 +11,7 @@ import './index.less';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 import Http from '@/utils/http';
+import { history } from 'umi';
 
 export default class Demo extends Component {
   constructor(props) {
@@ -39,6 +40,10 @@ export default class Demo extends Component {
     });
     console.log('seconelist', seconelist);
   }
+  goItem = (url) => {
+    console.log(url);
+    history.push(url);
+  };
 
   render() {
     const { show, pathname } = this.props;
@@ -63,7 +68,14 @@ export default class Demo extends Component {
               {menulist?.map((item) => (
                 <SubMenu title={item.menuName} key={item.menuId}>
                   {seconelist?.map((item, idx) => {
-                    return <Menu.Item key={idx}>{item.menuName}</Menu.Item>;
+                    return (
+                      <Menu.Item
+                        key={idx}
+                        onClick={this.goItem.bind(this, item.menuUrl)}
+                      >
+                        {item.menuName}
+                      </Menu.Item>
+                    );
                   })}
                 </SubMenu>
               ))}

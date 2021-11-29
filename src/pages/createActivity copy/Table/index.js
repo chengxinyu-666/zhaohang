@@ -6,7 +6,7 @@ export default function (props) {
     filteredInfo: null,
     sortedInfo: null,
   });
-  console.log(2, props);
+
   // state = {
   //   filteredInfo: null,
   //   sortedInfo: null,
@@ -59,14 +59,24 @@ export default function (props) {
       align: 'center',
       className: 'fs',
       ellipsis: true,
-      render: (activityStatus) => (
+      render: (activityStatus, data) => (
         <>
-          {activityStatus == 1 ? <a className="green">待审核</a> : ''}
-          {activityStatus == 2 ? <a className="purple">进行中</a> : ''}
-          {activityStatus == 3 ? <a className="grey">未开始</a> : ''}
-          {activityStatus == 4 ? <a className="red">已驳回</a> : ''}
-          {activityStatus == 5 ? <a className="grey"> 草稿</a> : ''}
-          {activityStatus == 6 ? <a className="grey">已结束</a> : ''}
+          {data.isDraft ? (
+            ''
+          ) : activityStatus === 1 ? (
+            <a className="green">待审核</a>
+          ) : (
+            ''
+          )}
+          {activityStatus === 2 ? <a className="purple">进行中</a> : ''}
+          {activityStatus === 3 ? <a className="grey">未开始</a> : ''}
+          {activityStatus === 4 ? <a className="red">已驳回</a> : ''}
+          {data.isDraft ? <a className="grey"> 草稿</a> : ''}
+          {activityStatus === 6 || activityStatus === 5 ? (
+            <a className="grey">已结束</a>
+          ) : (
+            ''
+          )}
         </>
       ),
     },
@@ -74,9 +84,20 @@ export default function (props) {
       title: '操作',
       dataIndex: 'activityStatus',
       key: 'id',
-      render: (activityStatus) => (
+      render: (activityStatus, data) => (
+        // console.log(9),
         <>
-          {activityStatus == 1 ? <a>详情</a> : ''}
+          {data.isDraft ? (
+            <>
+              <a>编辑</a>
+              <a>删除</a>
+            </>
+          ) : activityStatus == 1 ? (
+            <a>详情</a>
+          ) : (
+            ''
+          )}
+
           {activityStatus == 2 ? (
             <>
               <a>详情</a>
@@ -87,7 +108,7 @@ export default function (props) {
           )}
           {activityStatus == 3 ? (
             <>
-              <a>详情</a>{' '}
+              <a>详情</a>
             </>
           ) : (
             ''
@@ -101,7 +122,7 @@ export default function (props) {
           ) : (
             ''
           )}
-          {activityStatus == 5 ? (
+          {activityStatus == '5' ? (
             <>
               <a>详情</a>
               <a>删除</a>
@@ -109,7 +130,7 @@ export default function (props) {
           ) : (
             ''
           )}
-          {activityStatus == 6 ? (
+          {activityStatus == '6' ? (
             <>
               <a>详情</a>
               <a>删除</a>
@@ -137,10 +158,7 @@ export default function (props) {
 
   return (
     <div>
-      <Button
-        // hidden={actitem!=0}
-        type="primary"
-      >
+      <Button hidden={props.actitem != 0} type="primary">
         +创建活动
       </Button>
       {tabledate ? (
