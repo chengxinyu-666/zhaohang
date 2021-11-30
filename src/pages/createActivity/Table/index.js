@@ -82,7 +82,6 @@ export default function (props) {
       dataIndex: 'activityStatus',
       key: 'id',
       render: (activityStatus, data) => (
-        // console.log(9),
         <>
           {data.isDraft ? (
             <>

@@ -2,12 +2,13 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-29 17:59:20
+ * @LastEditTime: 2021-11-30 16:37:47
  */
 import React, { useState, useEffect } from 'react';
-import FlowOne from './components/FlowOne';
-import FlowTwo from './components/FlowTwo';
-import Flowpath from './components/Flowpath';
+import FlowOne from './components/FlowOne/index';
+import FlowTwo from './components/FlowTwo/index';
+import Flowpath from './components/Flowpath/index';
+
 import './index.less';
 export default function (props) {
   const [state, setState] = useState();

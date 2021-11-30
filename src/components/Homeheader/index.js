@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 10:26:54
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-29 13:37:35
+ * @LastEditTime: 2021-11-30 09:20:03
  */
 import React, { useState, useEffect } from 'react';
 import {
@@ -31,7 +31,8 @@ export default function (props) {
     request
       .post('/campus/campusweb/ipuser/logout ')
       .then(function (res) {
-        if (res.code == 200) {
+        console.log(9, res);
+        if (res) {
           cookie.remove('user');
           localStorage.removeItem('userName');
           message.info('退出成功！');
