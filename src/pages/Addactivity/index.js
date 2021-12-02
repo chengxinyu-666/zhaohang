@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 18:26:19
+ * @LastEditTime: 2021-12-02 19:23:36
  */
 import React, { useState, useEffect } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -11,6 +11,7 @@ import Flowpath from './components/Flowpath/index';
 import { Button } from 'antd';
 
 import './index.less';
+import request from 'umi-request';
 export default function (props) {
   const [state, setState] = useState();
   const [speed, setSpeed] = useState(1);
@@ -28,13 +29,37 @@ export default function (props) {
     thumbnailPictureKey: '', //String	是	缩略图key
     provinceCode: '', //	String	是	省编码
     cityCode: '', //	String	是	市编码
-    isSignUp: '', //	Bit	是	是否有报名活动 1-是0-否
-    isRobTickets: '', //	Bit	是	是否有抢票活动 1-是0-否
-    isSignIn: '', //	Bit	是	是否有签到活动 1-是0-否
-    isVote: '', //	Bit	是	是否有投票活动 1-是0-否
-    isLuckyDraw: '', //	Bit	是	是否有抽奖活动 1-是0-否
+    isSignUp: 0, //	Bit	是	是否有报名活动 1-是0-否
+    isRobTickets: 0, //	Bit	是	是否有抢票活动 1-是0-否
+    isSignIn: 0, //	Bit	是	是否有签到活动 1-是0-否
+    isVote: 0, //	Bit	是	是否有投票活动 1-是0-否
+    isLuckyDraw: 0, //	Bit	是	是否有抽奖活动 1-是0-否
     scheduleVOS: [], //	List<Object>	否	日程对象集合
     activitys: {}, //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
+    activityVOS: [
+      {
+        activityType: 1,
+        startDate: '2020-07-16 15:00',
+        endDate: '2020-07-17 12:00',
+        numberLimit: 9999999,
+        requiredEntryForms: [
+          {
+            key: '姓名',
+            value: '',
+            inputType: 1,
+            length: 30,
+            inputVerifyType: 'BaseInput7',
+          },
+          {
+            key: '手机号',
+            value: '',
+            inputType: 2,
+            length: 11,
+            inputVerifyType: 'MobileNoInput',
+          },
+        ],
+      },
+    ],
   });
 
   useEffect(() => {}, []);
@@ -43,7 +68,15 @@ export default function (props) {
     speed == 1 ? setSpeed(2) : setSpeed(1);
   };
   const saveDraft = () => {
-    console.log(2, actdata);
+    let data = actdata;
+    console.log(2, data);
+    request
+      .post('/campus/campusweb/activity/saveDrafts', {
+        data,
+      })
+      .then(function (res) {
+        console.log(res);
+      });
   };
 
   return (
