@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 11:14:25
+ * @LastEditTime: 2021-12-02 18:53:32
  */
 import React, { useState, useEffect } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -14,7 +14,7 @@ import SignUp from './components/SignUp';
 import Vote from './components/Vote';
 
 export default function (props) {
-  const [state, setState] = useState();
+  const { actdata, setActdata } = props;
   const [selectedItems, setSelectedItems] = useState([]);
 
   const OPTIONS = ['报名', '投票', '门票', '签到', '抽奖']; //创建活动选项

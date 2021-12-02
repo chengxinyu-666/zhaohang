@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:33:41
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-01 09:01:35
+ * @LastEditTime: 2021-12-02 14:40:40
  */
 /*
  * @Author: chengxinyu
@@ -80,6 +80,7 @@ export default function (props) {
               <Input
                 prefix={<LockOutlined className="site-form-item-icon" />}
                 type="password"
+                suggested="current-password"
                 placeholder="请输入登录密码"
               />
             </Form.Item>

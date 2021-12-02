@@ -79,10 +79,10 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
     form.resetFields();
   };
 
-  // const aaa = async () => {
-  //     let formdata = await form.validateFields()
-  //     console.log("aaa", formdata);
-  // }
+  const aaa = async () => {
+    let formdata = await form.validateFields();
+    console.log('aaa', formdata);
+  };
 
   return (
     <div>
@@ -115,9 +115,9 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
             </Col>
           </Row>
         </Form>
-        {/* <Button type="primary" htmlType="submit" onClick={aaa}>
-                    搜索11
-                </Button> */}
+        <Button type="primary" htmlType="submit" onClick={aaa}>
+          搜索11
+        </Button>
       </div>
       <Table tabledate={tabledate} actitem={actitem}></Table>
     </div>

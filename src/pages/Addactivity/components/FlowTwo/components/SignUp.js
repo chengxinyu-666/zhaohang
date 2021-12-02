@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-01 17:33:14
+ * @LastEditTime: 2021-12-02 18:59:39
  */
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Row, Col, DatePicker, Space, Tag, Button } from 'antd';
@@ -28,7 +28,19 @@ const tagsData = [
 ];
 
 export default function (props) {
+  const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
   const [state, setState] = useState();
+
+  // 调用表单提交
+  const basicformFun = async () => {
+    let basicformdata = await basicform.validateFields();
+
+    // setActdata({
+    //     ...actdata,
+    //     ...basicformdata
+    // })
+    console.log('aaa', basicformdata);
+  };
 
   const basicInfoFun = (value) => {
     console.log('基本信息时间', value);
@@ -55,7 +67,9 @@ export default function (props) {
   return (
     <div className="singup">
       <div className="singup_item">
+        <Button onClick={basicformFun}> 46</Button>
         <Form
+          form={basicform}
           name="basicInfo"
           labelCol={{
             span: 0,
@@ -79,12 +93,12 @@ export default function (props) {
                   <Form.Item
                     name="activitTime"
                     label="活动时间"
-                    rules={[
-                      {
-                        required: true,
-                        message: '请输入活动时间!',
-                      },
-                    ]}
+                    // rules={[
+                    //   {
+                    //     required: true,
+                    //     message: '请输入活动时间!',
+                    //   },
+                    // ]}
                   >
                     <Space direction="vertical" size="large">
                       <RangePicker
@@ -109,7 +123,7 @@ export default function (props) {
           <div className="form_item">
             <h1>选择您希望活动参加者填写的信息</h1>
             <div className="item_botder">
-              <Form.Item name="activitTime">
+              <Form.Item name="activitTime2">
                 <div>
                   {tagsData.map((tag) => (
                     <CheckableTag
