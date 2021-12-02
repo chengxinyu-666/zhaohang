@@ -2,10 +2,10 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-01 18:19:27
+ * @LastEditTime: 2021-12-02 11:14:25
  */
 import React, { useState, useEffect } from 'react';
-import { Select, Collapse } from 'antd';
+import { Select, Collapse, Button } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import '../../index.less';
 const { Panel } = Collapse;
@@ -62,45 +62,52 @@ export default function (props) {
           expandIconPosition="right"
           className="site-collapse-custom-collapse"
         >
-          <Panel
-            header={
-              <div className="penel_item">
-                <span className="sp1">报名</span>
+          {selectedItems.includes('报名') ? (
+            <Panel
+              header={
+                <div className="penel_item">
+                  <span className="sp1">报名</span>
+                </div>
+              }
+              style={{
+                backgroundColor: '#fff',
+              }}
+              key="1"
+              className="site-collapse-custom-panel"
+            >
+              <div className="active_item">
+                <div className="inner_action_item">
+                  <SignUp />
+                </div>
               </div>
-            }
-            style={{
-              backgroundColor: '#fff',
-            }}
-            key="1"
-            className="site-collapse-custom-panel"
-          >
-            <div className="active_item">
-              <div className="inner_action_item">
-                <SignUp />
-              </div>
-            </div>
-          </Panel>
+            </Panel>
+          ) : (
+            ''
+          )}
 
-          <Panel
-            header={
-              <div className="penel_item">
-                <span className="sp1">投票</span>
+          {selectedItems.includes('投票') ? (
+            <Panel
+              header={
+                <div className="penel_item">
+                  <span className="sp1">投票</span>
+                </div>
+              }
+              style={{
+                backgroundColor: '#fff',
+              }}
+              key="2"
+              className="site-collapse-custom-panel"
+            >
+              <div className="active_item">
+                <div className="inner_action_item">
+                  <Vote />
+                </div>
               </div>
-            }
-            style={{
-              backgroundColor: '#fff',
-            }}
-            key="2"
-            className="site-collapse-custom-panel"
-          >
-            <div className="active_item">
-              <div className="inner_action_item">
-                <Vote />
-              </div>
-            </div>
-          </Panel>
+            </Panel>
+          ) : (
+            ''
+          )}
         </Collapse>
-        ,
       </div>
     </div>
   );

@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-01 17:58:26
+ * @LastEditTime: 2021-12-02 13:52:59
  */
 
 import React, { useState, useEffect } from 'react';
@@ -45,6 +45,7 @@ export default function (props) {
       ...cityparameter,
     },
   });
+
   // 创建活动参数
   const [actdata, setActdata] = useState({
     activityName: '', //String	是	活动名称
@@ -66,58 +67,52 @@ export default function (props) {
     activitys: {}, //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
   });
 
-  function addactivityHttp() {}
-
   const optionLists = [
     {
-      value: 'zhejiang',
-      label: 'Zhejiang',
+      id: '123',
+      label: 'addressName',
+      value: 'addressCode',
       isLeaf: false,
     },
     {
-      value: 'jiangsu',
-      label: 'Jiangsu',
+      id: '543',
+      label: 'addressName',
+      value: 'addressCode',
       isLeaf: false,
     },
   ];
 
-  console.log('外层城市数据', rawData);
-  function diquChange(value, selectedOptions) {
-    console.log(value, selectedOptions);
-    // let data={
-    //     addressLevel:2,
-    //     parentId:value[0]
-    // }
-    // console.log(4,value[0]);
+  const [options, setOptions] = React.useState(optionLists);
 
-    // request
-    // .post('/campus/campusweb/address/queryAddressForFourLinkage', {
-    //     data
-    // })
-    // .then(function (res) {
-    //   console.log(res);
+  console.log('外层城市数据', rawData, options);
 
-    // })
-  }
+  const onChange3 = (value, selectedOptions) => {
+    console.log(1, value, selectedOptions);
+  };
 
-  //   const loadData = (selectedOptions) => {
-  //     const targetOption = selectedOptions[selectedOptions.length - 1];
-  //     console.log(678, targetOption);
+  const loadData = (selectedOptions) => {
+    const targetOption = selectedOptions[selectedOptions.length - 1];
+    // console.log('targetOption', targetOption);
+    targetOption.loading = true;
 
-  //     setTimeout(() => {
-  //       targetOption.children = [
-  //         {
-  //           label: `${targetOption.label} Dynamic 1`,
-  //           value: 'dynamic1',
-  //         },
-  //         {
-  //           label: `${targetOption.label} Dynamic 2`,
-  //           value: 'dynamic2',
-  //         },
-  //       ];
-  //       setOptions([...options]);
-  //     }, 1000);
-  //   };
+    // load options lazily
+    setTimeout(() => {
+      targetOption.loading = false;
+      targetOption.children = [
+        {
+          id: 'id1',
+          label: 'addressName',
+          value: 'addressCode',
+        },
+        {
+          id: 'id2',
+          label: 'addressName',
+          value: 'addressCode',
+        },
+      ];
+      setOptions([...options]);
+    }, 1000);
+  };
 
   // 以上是 地区选择部分，
 
@@ -245,16 +240,15 @@ export default function (props) {
                 >
                   <Cascader
                     size="large"
-                    options={rawData}
+                    options={options}
                     fieldNames={{
                       id: 'id',
                       label: 'addressName',
                       value: 'addressCode',
                       children: 'items',
                     }}
-                    // loadData={loadData}
-                    onChange={diquChange}
-                    expandTrigger="hover"
+                    loadData={loadData}
+                    onChange={onChange3}
                     changeOnSelect
                   />
                 </Form.Item>
@@ -265,12 +259,12 @@ export default function (props) {
                 <Form.Item
                   name="activitTime"
                   label="活动时间"
-                  // rules={[
-                  //     {
-                  //         required: true,
-                  //         message: '请输入活动时间!',
-                  //     },
-                  // ]}
+                  rules={[
+                    {
+                      required: true,
+                      message: '请输入活动时间!',
+                    },
+                  ]}
                 >
                   <Space direction="vertical" size="large">
                     <RangePicker
@@ -281,7 +275,6 @@ export default function (props) {
                       onOk={onOk}
                     />
                   </Space>
-                  ,
                 </Form.Item>
               </Col>
               <Col span={10} offset={4}>
