@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:33:41
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-25 14:08:46
+ * @LastEditTime: 2021-12-01 09:01:35
  */
 /*
  * @Author: chengxinyu
@@ -41,7 +41,7 @@ export default function (props) {
           cookie.set('user', res.data.userId);
           localStorage.setItem('userName', res.data.userName);
           message.info('登录成功！');
-          history.push('./home');
+          history.push('./createActivity');
         } else {
           message.info(res.message);
         }

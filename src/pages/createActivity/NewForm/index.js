@@ -24,6 +24,7 @@ const { RangePicker } = DatePicker;
 
 const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
   const [page, setPage] = useState(CommonEnum.PAGE);
+
   const [searchCriteria, setSearchCriteria] = useState({
     activityName: '', //活动名字
     activityStatus: activityStatus, //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束

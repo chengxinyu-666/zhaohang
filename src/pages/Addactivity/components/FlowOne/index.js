@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-30 18:22:41
+ * @LastEditTime: 2021-12-01 17:58:26
  */
 
 import React, { useState, useEffect } from 'react';
@@ -20,7 +20,12 @@ import {
   Modal,
   message,
 } from 'antd';
-import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
+import {
+  LoadingOutlined,
+  PlusOutlined,
+  ExclamationCircleOutlined,
+  DeleteOutlined,
+} from '@ant-design/icons';
 import { useHttpHook } from '@/hooks';
 import request from 'umi-request';
 import getBase64 from '@/utils/getBase64';
@@ -75,9 +80,9 @@ export default function (props) {
       isLeaf: false,
     },
   ];
-  //   const [options, setOptions] = React.useState(rawData);
+
   console.log('外层城市数据', rawData);
-  function onChange(value, selectedOptions) {
+  function diquChange(value, selectedOptions) {
     console.log(value, selectedOptions);
     // let data={
     //     addressLevel:2,
@@ -125,39 +130,70 @@ export default function (props) {
   }
 
   //   以上活动时间组件部分
-  const [smallimgcont, setSmallImgcont] = useState({
-    loading: false,
-    imageUrl: '',
-    imgKey: '',
+
+  //   图片上传参数
+  const [imgcont, setImgcont] = useState({
+    Picloading: false,
+    pictureKey: '',
+    pictureUrl: '',
+    thumbnailPictureload: false,
+    thumbnailPictureUrl: '',
+    thumbnailPictureKey: '',
   });
 
-  function upPicfun(info) {
-    console.log('图片上传', info);
-
-    if (info.file?.response?.code == 200) {
-      setSmallImgcont({
-        loading: false,
-        imageUrl: info.file.response.data.imgUrl,
-        imgKey: info.file.response.data.imgKey,
+  function upPicfun(id, info) {
+    console.log('图片上传', id, info);
+    if (info.file?.response?.code == 200 && id == 1) {
+      setImgcont({
+        Picloading: false,
+        pictureUrl: info.file.response.data.imgUrl,
+        pictureKey: info.file.response.data.imgKey,
+      });
+      return;
+    } else if (info.file?.response?.code == 200 && id == 2) {
+      setImgcont({
+        thumbnailPictureload: false,
+        thumbnailPictureUrl: info.file.response.data.imgUrl,
+        thumbnailPictureKey: info.file.response.data.imgKey,
       });
       return;
     }
   }
 
-  const uploadButton = (
+  const uploadButton1 = (
     <div>
-      {smallimgcont.loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
+      {imgcont.Picloading ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>添加图片</div>
+    </div>
+  );
+  const uploadButton2 = (
+    <div>
+      {imgcont.thumbnailPictureload ? <LoadingOutlined /> : <PlusOutlined />}
+      <div style={{ marginTop: 8 }}>添加图片</div>
     </div>
   );
   // 上传图片部分
 
-  const onFinish = (values) => {
+  // 基本活动信息表单
+  const essentialInfoFun = (values) => {
     console.log('Success:', values);
   };
 
-  const onFinishFailed = (errorInfo) => {
+  const essentialInfoFunErr = (errorInfo) => {
     console.log('Failed:', errorInfo);
+  };
+
+  // 编辑活动日程规划
+  function addDaily(value, dateString) {
+    console.log('Selected Time: ', value);
+    console.log('Formatted Selected Time: ', dateString);
+  }
+
+  function onOkDaily(value) {
+    console.log('onOk: ', value);
+  }
+  const addActiveFun = (values) => {
+    console.log('Received values of form:', values);
   };
 
   return (
@@ -177,8 +213,8 @@ export default function (props) {
               remember: true,
             }}
             layout="vertical"
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={essentialInfoFun}
+            onFinishFailed={essentialInfoFunErr}
             autoComplete="off"
           >
             <Row>
@@ -198,7 +234,7 @@ export default function (props) {
               </Col>
               <Col span={10} offset={4}>
                 <Form.Item
-                  name="Code"
+                  // name="Code"
                   label="活动地区"
                   rules={[
                     {
@@ -211,12 +247,13 @@ export default function (props) {
                     size="large"
                     options={rawData}
                     fieldNames={{
+                      id: 'id',
                       label: 'addressName',
                       value: 'addressCode',
                       children: 'items',
                     }}
                     // loadData={loadData}
-                    onChange={onChange}
+                    onChange={diquChange}
                     expandTrigger="hover"
                     changeOnSelect
                   />
@@ -228,12 +265,12 @@ export default function (props) {
                 <Form.Item
                   name="activitTime"
                   label="活动时间"
-                  rules={[
-                    {
-                      required: true,
-                      message: '请输入活动时间!',
-                    },
-                  ]}
+                  // rules={[
+                  //     {
+                  //         required: true,
+                  //         message: '请输入活动时间!',
+                  //     },
+                  // ]}
                 >
                   <Space direction="vertical" size="large">
                     <RangePicker
@@ -279,26 +316,14 @@ export default function (props) {
             <Row>
               <Col span={10}>
                 <Form.Item
-                  name="pictureUrl"
+                  name="picture"
                   label="活动图"
-                  rules={[
-                    {
-                      required: true,
-                      message: '请输入上传活动图!',
-                    },
-                  ]}
-                ></Form.Item>
-              </Col>
-              <Col span={10} offset={4}>
-                <Form.Item
-                  name="pictureUrl"
-                  label="活动图"
-                  rules={[
-                    {
-                      required: true,
-                      message: '请输入上传活动图!',
-                    },
-                  ]}
+                  // rules={[
+                  //     {
+                  //         required: true,
+                  //         message: '请输入上传活动图!',
+                  //     },
+                  // ]}
                 >
                   <Upload
                     name="multipartFile"
@@ -307,39 +332,150 @@ export default function (props) {
                     action="/campus/campusweb/upload/pictureUpload"
                     showUploadList={false}
                     beforeUpload={beforeUpload}
-                    onChange={upPicfun}
+                    onChange={upPicfun.bind(this, 1)}
                   >
-                    {smallimgcont.imageUrl ? (
+                    {imgcont.pictureUrl ? (
                       <img
-                        src={smallimgcont.imageUrl}
+                        src={imgcont.pictureUrl}
                         alt="avatar"
                         style={{ width: '100%' }}
                       />
                     ) : (
-                      uploadButton
+                      uploadButton1
                     )}
                   </Upload>
+                  <p>
+                    {' '}
+                    <ExclamationCircleOutlined style={{ color: '#ffb659' }} />
+                    推荐尺寸:1035*261
+                  </p>
+                </Form.Item>
+              </Col>
+              <Col span={10} offset={4}>
+                <Form.Item
+                  name="pictureUrl"
+                  label="活动缩略图"
+                  // rules={[
+                  //     {
+                  //         required: true,
+                  //         message: '请输入上传活动图!',
+                  //     },
+                  // ]}
+                >
+                  <Upload
+                    name="multipartFile"
+                    listType="picture-card"
+                    className="avatar-uploader"
+                    action="/campus/campusweb/upload/pictureUpload"
+                    showUploadList={false}
+                    beforeUpload={beforeUpload}
+                    onChange={upPicfun.bind(this, 2)}
+                  >
+                    {imgcont.thumbnailPictureUrl ? (
+                      <img
+                        src={imgcont.thumbnailPictureUrl}
+                        alt="avatar"
+                        style={{ width: '100%' }}
+                      />
+                    ) : (
+                      uploadButton2
+                    )}
+                  </Upload>
+                  <p>
+                    <ExclamationCircleOutlined style={{ color: '#ffb659' }} />
+                    推荐尺寸:168*216
+                  </p>
                 </Form.Item>
               </Col>
             </Row>
 
-            <Form.Item
-              wrapperCol={{
-                offset: 8,
-                span: 16,
-              }}
-            >
-              <Button type="primary" htmlType="submit">
-                Submit
-              </Button>
-            </Form.Item>
+            {/* <Form.Item
+                            wrapperCol={{
+                                offset: 8,
+                                span: 16,
+                            }}
+                        >
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item> */}
+          </Form>
+        </div>
+        <h3>
+          请编辑活动日程规划<span>(可添加多条)</span>
+        </h3>
+        <div className="active_box2">
+          <Form
+            name="dynamic_form_nest_item"
+            onFinish={addActiveFun}
+            autoComplete="off"
+            labelCol={{
+              span: 0,
+            }}
+            wrapperCol={{
+              span: 24,
+            }}
+          >
+            <Form.List name="users">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, fieldKey, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: 'flex', marginBottom: 8 }}
+                      align="baseline"
+                    >
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'first']}
+                        fieldKey={[fieldKey, 'first']}
+                      >
+                        <Input size="large" placeholder="请输入日程名称" />
+                      </Form.Item>
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'last']}
+                        fieldKey={[fieldKey, 'last']}
+                      >
+                        <DatePicker
+                          size="large"
+                          placeholder="请选择日程时间"
+                          showTime
+                          onChange={addDaily}
+                          onOk={onOkDaily}
+                        />
+                      </Form.Item>
+
+                      <DeleteOutlined
+                        style={{ color: '#df4833' }}
+                        onClick={() => remove(name)}
+                      />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      style={{
+                        width: '50%',
+                      }}
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      添加
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+            {/* <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Submit
+                            </Button>
+                        </Form.Item> */}
           </Form>
         </div>
       </div>
-      <div className="innerFlowpath">流程1</div>
-      <div className="innerFlowpath">流程1</div>
-      <div className="innerFlowpath">流程1</div>
-      <div className="innerFlowpath">流程1</div>
     </div>
   );
 }
