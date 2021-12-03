@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 10:26:54
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-30 09:20:03
+ * @LastEditTime: 2021-12-04 03:36:01
  */
 import React, { useState, useEffect } from 'react';
 import {
@@ -24,6 +24,7 @@ import { history } from 'umi';
 
 import '../index.less';
 export default function (props) {
+  const { show, pathname } = props;
   const [state, setState] = useState();
 
   const handLogout = () => {
@@ -61,7 +62,7 @@ export default function (props) {
   useEffect(() => {}, []);
 
   return (
-    <div className="head_top">
+    <div className="head_top" hidden={show}>
       <div className="head_top1">
         <div className="bride">
           {/* 预留面包屑导航 */}

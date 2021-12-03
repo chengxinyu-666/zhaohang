@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:34:44
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-03 14:00:49
+ * @LastEditTime: 2021-12-04 03:36:09
  */
 
 import React, { useState, useEffect } from 'react';
@@ -29,7 +29,10 @@ function BasicLayout(props) {
       </div>
 
       <div className="right_container">
-        <HomeHeader></HomeHeader>
+        <HomeHeader
+          show={paths.includes(location.pathname)}
+          pathname={location.pathname}
+        ></HomeHeader>
         {props.children}
       </div>
     </div>
