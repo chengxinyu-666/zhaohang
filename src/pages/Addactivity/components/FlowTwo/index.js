@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 18:53:32
+ * @LastEditTime: 2021-12-03 16:23:56
  */
 import React, { useState, useEffect } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -12,19 +12,49 @@ const { Panel } = Collapse;
 
 import SignUp from './components/SignUp';
 import Vote from './components/Vote';
+import Ticket from './components/Ticket';
 
 export default function (props) {
   const { actdata, setActdata } = props;
+  console.log('two组件的', props);
   const [selectedItems, setSelectedItems] = useState([]);
 
   const OPTIONS = ['报名', '投票', '门票', '签到', '抽奖']; //创建活动选项
 
   const choseActiveFun = (a) => {
     console.log(33, a);
+    let obj = {
+      isSignUp: false,
+      isVote: false,
+      isRobTickets: false,
+      isSignIn: false,
+      isLuckyDraw: false,
+    };
+    if (a.includes('报名')) {
+      obj.isSignUp = true;
+    }
+    if (a.includes('投票')) {
+      obj.isVote = true;
+    }
+    if (a.includes('门票')) {
+      obj.isRobTickets = true;
+    }
+    if (a.includes('签到')) {
+      obj.isSignIn = true;
+    }
+    if (a.includes('抽奖')) {
+      obj.isLuckyDraw = true;
+    }
     setSelectedItems(a);
+    setActdata({
+      ...actdata,
+      ...obj,
+    });
   };
 
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+  const filteredOptions = OPTIONS.filter((o) => {
+    return !selectedItems.includes(o);
+  });
 
   useEffect(() => {}, []);
   return (
@@ -77,7 +107,7 @@ export default function (props) {
             >
               <div className="active_item">
                 <div className="inner_action_item">
-                  <SignUp />
+                  <SignUp actdata={actdata} setActdata={setActdata} />
                 </div>
               </div>
             </Panel>
@@ -101,6 +131,28 @@ export default function (props) {
               <div className="active_item">
                 <div className="inner_action_item">
                   <Vote />
+                </div>
+              </div>
+            </Panel>
+          ) : (
+            ''
+          )}
+          {selectedItems.includes('门票') ? (
+            <Panel
+              header={
+                <div className="penel_item">
+                  <span className="sp1">门票</span>
+                </div>
+              }
+              style={{
+                backgroundColor: '#fff',
+              }}
+              key="3"
+              className="site-collapse-custom-panel"
+            >
+              <div className="active_item">
+                <div className="inner_action_item">
+                  <Ticket />
                 </div>
               </div>
             </Panel>

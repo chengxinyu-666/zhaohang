@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 19:28:44
+ * @LastEditTime: 2021-12-03 15:51:14
  */
 
 import React, { useState, useEffect } from 'react';
@@ -38,6 +38,7 @@ export default function (props) {
   // 调用表单提交
   const basicformFun = async () => {
     let basicformdata = await basicform.validateFields();
+
     if (basicformdata.scheduleVOS) {
       let newArr = [];
       basicformdata.scheduleVOS.forEach((item) => {
@@ -49,10 +50,18 @@ export default function (props) {
       basicformdata.scheduleVOS = newArr;
     }
 
-    setActdata({
-      ...actdata,
-      ...basicformdata,
-    });
+    basicformdata.startDate = moment(basicformdata.huodongshijian[0]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+    basicformdata.endDate = moment(basicformdata.huodongshijian[1]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+
+    delete basicformdata.huodongshijian,
+      setActdata({
+        ...actdata,
+        ...basicformdata,
+      });
     console.log('aaa', basicformdata);
   };
 
@@ -119,11 +128,11 @@ export default function (props) {
 
   function onChangeTime(value, dateString) {
     console.log('开始时间', dateString);
-    setActdata({
-      ...actdata,
-      startDate: dateString[0],
-      endDate: dateString[1],
-    });
+    // setActdata({
+    //   ...actdata,
+    //   startDate: dateString[0],
+    //   endDate: dateString[1],
+    // });
   }
 
   //   以上活动时间组件部分
@@ -262,6 +271,7 @@ export default function (props) {
               <Row>
                 <Col span={10}>
                   <Form.Item
+                    name="huodongshijian"
                     label="活动时间"
                     rules={[
                       {
@@ -270,14 +280,15 @@ export default function (props) {
                       },
                     ]}
                   >
-                    <Space direction="vertical" size="large">
-                      <RangePicker
-                        size="large"
-                        showTime={{ format: 'HH:mm' }}
-                        format="YYYY-MM-DD HH:mm"
-                        onChange={onChangeTime}
-                      />
-                    </Space>
+                    {/* <Space direction="vertical" size="large"> */}
+                    <RangePicker
+                      size="large"
+                      showTime={{ format: 'HH:mm' }}
+                      format="YYYY-MM-DD HH:mm"
+                      showTime
+                      onChange={onChangeTime}
+                    />
+                    {/* </Space> */}
                   </Form.Item>
                 </Col>
                 <Col span={10} offset={4}>

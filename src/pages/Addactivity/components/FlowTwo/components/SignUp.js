@@ -2,11 +2,13 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 18:59:39
+ * @LastEditTime: 2021-12-03 18:04:23
  */
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Row, Col, DatePicker, Space, Tag, Button } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
+
+import moment from 'moment';
 
 import '../../../index.less';
 const { RangePicker } = DatePicker;
@@ -29,17 +31,39 @@ const tagsData = [
 
 export default function (props) {
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
+  const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
   const [state, setState] = useState();
+  const [signdata, setSigndata] = useState({
+    activityType: 1,
+  });
+  const { actdata, setActdata } = props;
+  console.log('two孙子组件的', props);
 
   // 调用表单提交
-  const basicformFun = async () => {
+  const basicformFun1 = async () => {
     let basicformdata = await basicform.validateFields();
 
-    // setActdata({
-    //     ...actdata,
-    //     ...basicformdata
-    // })
-    console.log('aaa', basicformdata);
+    basicformdata.startDate = moment(basicformdata.activitTime[0]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+    basicformdata.endDate = moment(basicformdata.activitTime[1]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+    delete basicformdata.activitTime;
+    let optionalEntryForms = [];
+    basicformdata.optionalEntryFormsdata.forEach((item) => {
+      optionalEntryForms.push({
+        key: item.key,
+        value: '',
+      });
+    });
+    basicformdata.optionalEntryForms = optionalEntryForms;
+    delete basicformdata.optionalEntryFormsdata;
+    // setSigndata(
+    //   ...signdata,
+    //   ...basicformdata
+    // )
+    console.log('aaa', basicformdata, selectedTags);
   };
 
   const basicInfoFun = (value) => {
@@ -51,23 +75,20 @@ export default function (props) {
   function onChangeTime(value, dateString) {
     console.log('开始时间', value, '结束时间 ', dateString);
   }
-  function onOk(value) {
-    console.log('onOk: ', value);
-  }
-  const [selectedTags, setSelectedTags] = useState([]);
+
   const handleChange = (tag, checked) => {
     if (checked) {
       setSelectedTags([...selectedTags, tag]);
     } else {
       setSelectedTags(selectedTags.filter((t) => t !== tag));
-      console.log('selectedTags', selectedTags);
     }
+    console.log(77777, tag, selectedTags);
   };
 
   return (
     <div className="singup">
       <div className="singup_item">
-        <Button onClick={basicformFun}> 46</Button>
+        <Button onClick={basicformFun1}> 46</Button>
         <Form
           form={basicform}
           name="basicInfo"
@@ -93,23 +114,19 @@ export default function (props) {
                   <Form.Item
                     name="activitTime"
                     label="活动时间"
-                    // rules={[
-                    //   {
-                    //     required: true,
-                    //     message: '请输入活动时间!',
-                    //   },
-                    // ]}
+                    rules={[
+                      {
+                        required: true,
+                        message: '请输入活动时间!',
+                      },
+                    ]}
                   >
-                    <Space direction="vertical" size="large">
-                      <RangePicker
-                        size="large"
-                        showTime={{ format: 'HH:mm' }}
-                        format="YYYY-MM-DD HH:mm"
-                        onChange={onChangeTime}
-                        onOk={onOk}
-                      />
-                    </Space>
-                    ,
+                    <RangePicker
+                      size="large"
+                      showTime={{ format: 'HH:mm' }}
+                      format="YYYY-MM-DD HH:mm"
+                      onChange={onChangeTime}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={10} offset={4}>
@@ -123,32 +140,30 @@ export default function (props) {
           <div className="form_item">
             <h1>选择您希望活动参加者填写的信息</h1>
             <div className="item_botder">
-              <Form.Item name="activitTime2">
-                <div>
-                  {tagsData.map((tag) => (
-                    <CheckableTag
-                      style={{
-                        display: 'inline-block',
-                        border: '1px solid #6f6f6f',
-                        padding: '5px 15px',
-                        borderRadius: '5px',
-                        margin: '0 20px 10px 0',
-                      }}
-                      key={tag}
-                      checked={selectedTags.indexOf(tag) > -1}
-                      onChange={(checked) => handleChange(tag, checked)}
-                    >
-                      {tag}
-                    </CheckableTag>
-                  ))}
-                </div>
+              <Form.Item>
+                {tagsData.map((tag) => (
+                  <CheckableTag
+                    style={{
+                      display: 'inline-block',
+                      border: '1px solid #6f6f6f',
+                      padding: '5px 15px',
+                      borderRadius: '5px',
+                      margin: '0 20px 10px 0',
+                    }}
+                    key={tag}
+                    checked={selectedTags.indexOf(tag) > -1}
+                    onChange={(checked) => handleChange(tag, checked)}
+                  >
+                    {tag}
+                  </CheckableTag>
+                ))}
               </Form.Item>
             </div>
           </div>
           <div className="form_item">
             <h1>可添加项目补充</h1>
             <div className="item_botder">
-              <Form.List name="buchong">
+              <Form.List name="optionalEntryFormsdata">
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map(({ key, name, fieldKey, ...restField }) => (
@@ -159,8 +174,8 @@ export default function (props) {
                       >
                         <Form.Item
                           {...restField}
-                          name={[name, 'first']}
-                          fieldKey={[fieldKey, 'first']}
+                          name={[name, 'key']}
+                          fieldKey={[fieldKey, 'key']}
                         >
                           <Input
                             size="large"

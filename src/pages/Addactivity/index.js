@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 19:23:36
+ * @LastEditTime: 2021-12-03 16:02:16
  */
 import React, { useState, useEffect } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -29,37 +29,13 @@ export default function (props) {
     thumbnailPictureKey: '', //String	是	缩略图key
     provinceCode: '', //	String	是	省编码
     cityCode: '', //	String	是	市编码
-    isSignUp: 0, //	Bit	是	是否有报名活动 1-是0-否
-    isRobTickets: 0, //	Bit	是	是否有抢票活动 1-是0-否
-    isSignIn: 0, //	Bit	是	是否有签到活动 1-是0-否
-    isVote: 0, //	Bit	是	是否有投票活动 1-是0-否
-    isLuckyDraw: 0, //	Bit	是	是否有抽奖活动 1-是0-否
+    isSignUp: false, //	Bit	是	是否有报名活动
+    isRobTickets: false, //	Bit	是	是否有抢票活动
+    isSignIn: false, //	Bit	是	是否有签到活动
+    isVote: false, //	Bit	是	是否有投票活动
+    isLuckyDraw: false, //	Bit	是	是否有抽奖活动
     scheduleVOS: [], //	List<Object>	否	日程对象集合
-    activitys: {}, //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
-    activityVOS: [
-      {
-        activityType: 1,
-        startDate: '2020-07-16 15:00',
-        endDate: '2020-07-17 12:00',
-        numberLimit: 9999999,
-        requiredEntryForms: [
-          {
-            key: '姓名',
-            value: '',
-            inputType: 1,
-            length: 30,
-            inputVerifyType: 'BaseInput7',
-          },
-          {
-            key: '手机号',
-            value: '',
-            inputType: 2,
-            length: 11,
-            inputVerifyType: 'MobileNoInput',
-          },
-        ],
-      },
-    ],
+    activityVOS: [], //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
   });
 
   useEffect(() => {}, []);
@@ -88,7 +64,7 @@ export default function (props) {
         {speed == 1 ? (
           <FlowOne actdata={actdata} setActdata={setActdata}></FlowOne>
         ) : (
-          <FlowTwo></FlowTwo>
+          <FlowTwo actdata={actdata} setActdata={setActdata}></FlowTwo>
         )}
 
         <div className="flow_tab">

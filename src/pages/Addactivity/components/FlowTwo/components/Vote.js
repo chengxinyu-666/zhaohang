@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-01 18:15:10
+ * @LastEditTime: 2021-12-03 15:19:03
  */
 import React, { useState, useEffect } from 'react';
 import {
@@ -147,6 +147,47 @@ export default function (props) {
           <div className="form_item">
             <h1>投票对象</h1>
             <div className="item_botder">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map(({ key, name, fieldKey, ...restField }) => (
+                    <Space
+                      key={key}
+                      style={{ display: 'flex', marginBottom: 8 }}
+                      align="baseline"
+                    >
+                      <Form.Item
+                        {...restField}
+                        name={[name, 'first']}
+                        fieldKey={[fieldKey, 'first']}
+                      >
+                        <Input
+                          size="large"
+                          placeholder="请输入项目名称,如爱好"
+                        />
+                      </Form.Item>
+
+                      <DeleteOutlined
+                        style={{ color: '#df4833' }}
+                        onClick={() => remove(name)}
+                      />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      style={{
+                        width: '25%',
+                      }}
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
+                    >
+                      添加
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+
               <Row>
                 <Col span={10}>
                   <Form.Item
@@ -181,7 +222,6 @@ export default function (props) {
               <Row>
                 <Col span={10}>
                   <Form.Item
-                    name="picture"
                     label="图片"
                     rules={[
                       {
@@ -210,7 +250,7 @@ export default function (props) {
                       )}
                     </Upload>
                     <p>
-                      <ExclamationCircleOutlined style={{ color: '#ffb659' }} />
+                      <ExclamationCircleOutlined />
                       支持扩展名:jpg,jpeg,png
                     </p>
                   </Form.Item>

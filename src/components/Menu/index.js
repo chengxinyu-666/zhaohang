@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 12:59:15
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 09:48:06
+ * @LastEditTime: 2021-12-03 14:00:05
  */
 
 import React, { useState, useEffect } from 'react';
@@ -12,8 +12,10 @@ import { useHttpHook } from '@/hooks';
 const { Header, Content, Footer, Sider } = Layout;
 const { SubMenu } = Menu;
 import { history } from 'umi';
+// import {useDispatch, useSelector} from 'react-redux'
 export default function (props) {
   const [state, setState] = useState();
+
   const { show, pathname } = props;
 
   //地区获取参数
@@ -29,7 +31,7 @@ export default function (props) {
   console.log('seconelist', seconelist);
 
   function goItem(url) {
-    console.log(url);
+    // console.log(url);
     history.push(url);
   }
 
