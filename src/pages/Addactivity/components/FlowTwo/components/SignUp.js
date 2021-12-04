@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-03 18:04:23
+ * @LastEditTime: 2021-12-05 03:07:00
  */
 import React, { useState, useEffect } from 'react';
 import { Form, Input, Row, Col, DatePicker, Space, Tag, Button } from 'antd';
@@ -32,7 +32,7 @@ const tagsData = [
 export default function (props) {
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
   const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
-  const [state, setState] = useState();
+
   const [signdata, setSigndata] = useState({
     activityType: 1,
   });
@@ -41,6 +41,7 @@ export default function (props) {
 
   // 调用表单提交
   const basicformFun1 = async () => {
+    console.log('sig', signdata);
     let basicformdata = await basicform.validateFields();
 
     basicformdata.startDate = moment(basicformdata.activitTime[0]).format(
@@ -51,19 +52,29 @@ export default function (props) {
     );
     delete basicformdata.activitTime;
     let optionalEntryForms = [];
-    basicformdata.optionalEntryFormsdata.forEach((item) => {
-      optionalEntryForms.push({
-        key: item.key,
-        value: '',
+
+    if (basicformdata.optionalEntryFormsdata) {
+      basicformdata.optionalEntryFormsdata.forEach((item) => {
+        optionalEntryForms.push({
+          key: item.key,
+          value: '',
+        });
       });
-    });
+    }
+    if (!basicformdata.numberLimit) {
+      basicformdata.numberLimit = '';
+    }
     basicformdata.optionalEntryForms = optionalEntryForms;
     delete basicformdata.optionalEntryFormsdata;
-    // setSigndata(
-    //   ...signdata,
-    //   ...basicformdata
-    // )
-    console.log('aaa', basicformdata, selectedTags);
+    basicformdata.requiredEntryForms = selectedTags;
+    setSigndata({
+      ...signdata,
+      ...basicformdata,
+    });
+    setActdata({
+      ...actdata,
+      activityVOS: [{ ...signdata }],
+    });
   };
 
   const basicInfoFun = (value) => {
@@ -75,14 +86,18 @@ export default function (props) {
   function onChangeTime(value, dateString) {
     console.log('开始时间', value, '结束时间 ', dateString);
   }
-
   const handleChange = (tag, checked) => {
     if (checked) {
-      setSelectedTags([...selectedTags, tag]);
+      setSelectedTags([
+        ...selectedTags,
+        {
+          key: tag,
+          value: '',
+        },
+      ]);
     } else {
-      setSelectedTags(selectedTags.filter((t) => t !== tag));
+      setSelectedTags(selectedTags.filter((t) => t.key !== tag));
     }
-    console.log(77777, tag, selectedTags);
   };
 
   return (
@@ -151,7 +166,11 @@ export default function (props) {
                       margin: '0 20px 10px 0',
                     }}
                     key={tag}
-                    checked={selectedTags.indexOf(tag) > -1}
+                    checked={selectedTags.some((item) => {
+                      if (item.key == tag) {
+                        return true;
+                      }
+                    })}
                     onChange={(checked) => handleChange(tag, checked)}
                   >
                     {tag}
@@ -176,6 +195,12 @@ export default function (props) {
                           {...restField}
                           name={[name, 'key']}
                           fieldKey={[fieldKey, 'key']}
+                          rules={[
+                            {
+                              required: true,
+                              message: '可添加项目补充!',
+                            },
+                          ]}
                         >
                           <Input
                             size="large"

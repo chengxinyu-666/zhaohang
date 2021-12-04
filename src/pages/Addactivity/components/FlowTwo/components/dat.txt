@@ -1,0 +1,138 @@
+"activityVOS" = [
+    {
+        "activityType": 1, //类型
+        "startDate": "2020-07-16 15:00",
+        "endDate": "2020-07-17 12:00",
+        "numberLimit": 9999999,
+        "requiredEntryForms": [
+            {
+                "key": "姓名",
+                "value": "",
+
+            },
+            {
+                "key": "手机号",
+                "value": "",
+
+            }
+        ],
+        "optionalEntryForms": [
+            {
+                "key": "选填字段1",
+                "value": "",
+                "inputType": 1,
+                "length": 30,
+                "inputVerifyType": "BaseInput7"
+            },
+            {
+                "key": "选填字段2",
+                "value": "",
+                "inputType": 1,
+                "length": 30,
+                "inputVerifyType": "BaseInput7"
+            }
+        ]
+    },
+    {
+        "activityType": 2,
+        "startDate": "2020-07-17 15:00",
+        "endDate": "2020-07-18 12:00",
+        "voteWay": 2,
+        "dayVoteLimit": 9999999,
+        "singlePlayerLimit": 9999999,
+        "voteObjectVOS": [
+            {
+                "pictureKey": "投票对象1图片key",
+                "pictureUrl": "投票对象1图片链接",
+                "name": "投票对象1",
+                "instructions": "说明"
+            },
+            {
+                "pictureKey": "投票对象2图片key",
+                "pictureUrl": "投票对象2图片链接",
+                "name": "投票对象2",
+                "instructions": "说明"
+            },
+            {
+                "pictureKey": "投票对象3图片key",
+                "pictureUrl": "投票对象3图片链接",
+                "name": "投票对象3",
+                "instructions": "说明"
+            }
+        ]
+    },
+    {
+        "activityType": 3,
+        "startDate": "2020-07-19 15:00",
+        "endDate": "2020-07-20 12:00",
+        "numberLimit": 9999999,
+        "requiredEntryForms": [
+            {
+                "key": "姓名",
+                "value": "",
+                "inputType": 1,
+                "length": 30,
+                "inputVerifyType": "BaseInput7"
+            },
+            {
+                "key": "手机号",
+                "value": "",
+                "inputType": 2,
+                "length": 11,
+                "inputVerifyType": "MobileNoInput"
+            }
+        ],
+        "optionalEntryForms": [
+            {
+                "key": "选填字段1",
+                "value": "",
+                "inputType": 1,
+                "length": 30,
+                "inputVerifyType": "BaseInput7"
+            },
+            {
+                "key": "选填字段2",
+                "value": "",
+                "inputType": 1,
+                "length": 30,
+                "inputVerifyType": "BaseInput7"
+            }
+        ]
+    },
+    {
+        "activityType": 4,
+        "startDate": "2020-07-21 15:00",
+        "endDate": "2020-07-22 12:00",
+        "signInType": 1
+    },
+    {
+        "activityType": 5,
+        "startDate": "2020-07-22 15:00",
+        "endDate": "2020-07-23 12:00",
+        "luckyDrawNumber": 9999999,
+        "rules": "兑奖规则",
+        "prizeVOS": [
+            {
+                "prizeLevel": 1,
+                "pictureKey": "奖品1图片",
+                "prizeName": "奖品1名称",
+                "prizeTotal": 9999999,
+                "chance": 1
+            },
+            {
+                "prizeLevel": 2,
+                "pictureKey": "奖品2图片",
+                "prizeName": "奖品2名称",
+                "prizeTotal": 9999999,
+                "chance": 2
+            },
+            {
+                "prizeLevel": 0,
+                "pictureKey": "默认奖品图片",
+                "prizeName": "默认奖品名称",
+                "prizeTotal": 9999999,
+                "chance": 97
+            }
+        ]
+    }
+]

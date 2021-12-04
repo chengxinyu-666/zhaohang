@@ -88,18 +88,18 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
     <div>
       <div className="Tablefilter2">
         <Form form={form} name="control-hooks" onFinish={onFinish}>
-          <Row gutter={8}>
-            <Col span={6}>
+          <Row>
+            <Col pan={6}>
               <Form.Item name="activename" label="活动名称">
                 <Input placeholder="请输入" />
               </Form.Item>
             </Col>
-            <Col span={6} style={{ marginLeft: 20 }}>
+            <Col span={10} offset={1}>
               <Form.Item name="activetime" label="创建时间">
                 <RangePicker style={{ width: 260 }} />
               </Form.Item>
             </Col>
-            <Col span={4} style={{ marginLeft: 100 }}>
+            <Col span={4} offset={1}>
               <Form.Item>
                 <Button type="primary" htmlType="submit">
                   搜索
