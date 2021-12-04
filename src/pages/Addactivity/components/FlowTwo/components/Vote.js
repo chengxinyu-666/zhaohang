@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-04 02:59:37
+ * @LastEditTime: 2021-12-05 04:19:57
  */
 import React, { useState, useEffect } from 'react';
 import {
@@ -14,9 +14,10 @@ import {
   Cascader,
   Space,
   Upload,
+  Button,
 } from 'antd';
 import {
-  DownOutlined,
+  DeleteOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
@@ -147,15 +148,90 @@ export default function (props) {
           <div className="form_item">
             <h1>投票对象</h1>
             <div className="item_botder">
-              {(fields, { add, remove }) => (
-                <>
-                  {fields.map(({ key, name, fieldKey, ...restField }) => (
-                    <Space
-                      key={key}
-                      style={{ display: 'flex', marginBottom: 8 }}
-                      align="baseline"
-                    >
-                      <Form.Item
+              <Form.List name="toupiao">
+                {(fields, { add, remove }) => (
+                  <>
+                    {fields.map(({ key, name, fieldKey, ...restField }) => (
+                      <Space
+                        key={key}
+                        style={{ display: 'flex', marginBottom: 8 }}
+                        align="baseline"
+                      >
+                        <Row>
+                          <Col span={10}>
+                            <Form.Item
+                              {...restField}
+                              name={[name, 'name']}
+                              fieldKey={[fieldKey, 'name']}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '请输入投票对象的名称!',
+                                },
+                              ]}
+                            >
+                              <Input placeholder="请输入投票对象的名称"></Input>
+                            </Form.Item>
+                          </Col>
+
+                          <Col span={10} offset={4}>
+                            <Form.Item
+                              label="说明"
+                              {...restField}
+                              name={[name, 'instructions']}
+                              fieldKey={[fieldKey, 'instructions']}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '请输入投票对象的说明!',
+                                },
+                              ]}
+                            >
+                              <Input placeholder="请输入投票对象的说明"></Input>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+                        <Row>
+                          <Col span={10}>
+                            <Form.Item
+                              label="图片"
+                              {...restField}
+                              name={[name, 'pic']}
+                              fieldKey={[fieldKey, 'pic']}
+                              rules={[
+                                {
+                                  required: true,
+                                  message: '请输入上传图片!',
+                                },
+                              ]}
+                            >
+                              <Upload
+                                listType="picture-card"
+                                className="avatar-uploader"
+                                action="/campus/campusweb/upload/pictureUpload"
+                                showUploadList={false}
+                                beforeUpload={beforeUpload}
+                                onChange={upPicfun}
+                              >
+                                {imgcont.pictureUrl ? (
+                                  <img
+                                    src={imgcont.pictureUrl}
+                                    alt="avatar"
+                                    style={{ width: '100%' }}
+                                  />
+                                ) : (
+                                  uploadButton
+                                )}
+                              </Upload>
+                              <p>
+                                <ExclamationCircleOutlined />
+                                支持扩展名:jpg,jpeg,png
+                              </p>
+                            </Form.Item>
+                          </Col>
+                        </Row>
+
+                        {/* <Form.Item
                         {...restField}
                         name={[name, 'first']}
                         fieldKey={[fieldKey, 'first']}
@@ -164,98 +240,31 @@ export default function (props) {
                           size="large"
                           placeholder="请输入项目名称,如爱好"
                         />
-                      </Form.Item>
+                      </Form.Item> */}
 
-                      <DeleteOutlined
+                        {/* <DeleteOutlined
                         style={{ color: '#df4833' }}
                         onClick={() => remove(name)}
-                      />
-                    </Space>
-                  ))}
-                  <Form.Item>
-                    <Button
-                      style={{
-                        width: '25%',
-                      }}
-                      type="dashed"
-                      onClick={() => add()}
-                      block
-                      icon={<PlusOutlined />}
-                    >
-                      添加
-                    </Button>
-                  </Form.Item>
-                </>
-              )}
+                      /> */}
+                      </Space>
+                    ))}
 
-              <Row>
-                <Col span={10}>
-                  <Form.Item
-                    name="name"
-                    label="活动时间"
-                    rules={[
-                      {
-                        required: true,
-                        message: '请输入投票对象的名称!',
-                      },
-                    ]}
-                  >
-                    <Input placeholder="请输入投票对象的名称"></Input>
-                  </Form.Item>
-                </Col>
-
-                <Col span={10} offset={4}>
-                  <Form.Item
-                    name="instructions"
-                    label="说明"
-                    rules={[
-                      {
-                        required: true,
-                        message: '请输入投票对象的说明!',
-                      },
-                    ]}
-                  >
-                    <Input placeholder="请输入投票对象的说明"></Input>
-                  </Form.Item>
-                </Col>
-              </Row>
-              <Row>
-                <Col span={10}>
-                  <Form.Item
-                    label="图片"
-                    rules={[
-                      {
-                        required: true,
-                        message: '请输入上传图片!',
-                      },
-                    ]}
-                  >
-                    <Upload
-                      name="multipartFile"
-                      listType="picture-card"
-                      className="avatar-uploader"
-                      action="/campus/campusweb/upload/pictureUpload"
-                      showUploadList={false}
-                      beforeUpload={beforeUpload}
-                      onChange={upPicfun}
-                    >
-                      {imgcont.pictureUrl ? (
-                        <img
-                          src={imgcont.pictureUrl}
-                          alt="avatar"
-                          style={{ width: '100%' }}
-                        />
-                      ) : (
-                        uploadButton
-                      )}
-                    </Upload>
-                    <p>
-                      <ExclamationCircleOutlined />
-                      支持扩展名:jpg,jpeg,png
-                    </p>
-                  </Form.Item>
-                </Col>
-              </Row>
+                    <Form.Item>
+                      <Button
+                        style={{
+                          width: '25%',
+                        }}
+                        type="dashed"
+                        onClick={() => add()}
+                        block
+                        icon={<PlusOutlined />}
+                      >
+                        添加
+                      </Button>
+                    </Form.Item>
+                  </>
+                )}
+              </Form.List>
             </div>
           </div>
         </Form>
