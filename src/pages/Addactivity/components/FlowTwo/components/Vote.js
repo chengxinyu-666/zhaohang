@@ -2,9 +2,15 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-05 04:19:57
+ * @LastEditTime: 2021-12-06 01:15:19
  */
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
+import moment from 'moment';
 import {
   Form,
   Input,
@@ -18,16 +24,21 @@ import {
 } from 'antd';
 import {
   DeleteOutlined,
+  LoadingOutlined,
   ExclamationCircleOutlined,
   PlusOutlined,
 } from '@ant-design/icons';
 import '../../../index.less';
+import request from 'umi-request';
 import beforeUpload from '@/utils/beforeUpload';
 const { RangePicker } = DatePicker;
 
-export default function (props) {
-  const [state, setState] = useState();
-
+const Vote = forwardRef((props, ref) => {
+  const [voteform] = Form.useForm(); //投票表单
+  const [votedata, setVotedata] = useState({
+    activityType: 2,
+  });
+  const { actdata, setActdata } = props;
   const basicInfoFun = (value) => {
     console.log('基本信息时间', value);
   };
@@ -61,20 +72,33 @@ export default function (props) {
   //   上传图片部分
 
   //   图片上传参数
-  const [imgcont, setImgcont] = useState({
-    loading: false,
-    pictureKey: '',
-    pictureUrl: '',
-  });
+  const [imgcont, setImgcont] = useState([
+    {
+      loading: false,
+      pictureKey: '',
+      pictureUrl: '',
+    },
+  ]);
 
-  function upPicfun(info) {
-    console.log('图片上传', info);
-    if (info.file?.response?.code == 200) {
-      setImgcont({
-        loading: false,
-        pictureUrl: info.file.response.data.imgUrl,
-        pictureKey: info.file.response.data.imgKey,
-      });
+  function upPicfun(id, info) {
+    console.log('图片上传', imgcont, info, id);
+    if (id == 0 && info.file?.response?.code == 200) {
+      setImgcont([
+        {
+          loading: false,
+          pictureUrl: info.file.response.data.imgUrl,
+          pictureKey: info.file.response.data.imgKey,
+        },
+      ]);
+    } else if (id > 0 && info.file?.response?.code == 200) {
+      setImgcont([
+        ...imgcont,
+        {
+          loading: false,
+          pictureUrl: info.file.response.data.imgUrl,
+          pictureKey: info.file.response.data.imgKey,
+        },
+      ]);
       return;
     }
   }
@@ -86,12 +110,53 @@ export default function (props) {
     </div>
   );
 
+  useImperativeHandle(ref, () => ({
+    voteformfun,
+  }));
+
+  // 调用表单提交
+  const voteformfun = async () => {
+    let voteformdata = await voteform.validateFields();
+    voteformdata.startDate = moment(voteformdata.activitTime[0]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+    voteformdata.endDate = moment(voteformdata.activitTime[1]).format(
+      'YYYY-MM-DD HH:mm',
+    );
+    voteformdata.voteWay = voteformdata.voteWay[0];
+
+    let voteObjectVOS = voteformdata.picarr.map((item, idx) => {
+      return {
+        ...item,
+        ...imgcont[idx],
+      };
+    });
+    voteformdata.voteObjectVOS = voteObjectVOS;
+
+    delete voteformdata.picarr;
+    delete voteformdata.activitTime;
+    console.log('basicformdata', voteformdata);
+    setVotedata({
+      ...votedata,
+      ...voteformdata,
+      dayVoteLimit: '9999999',
+      singlePlayerLimit: '9999999',
+    });
+
+    setActdata({
+      ...actdata,
+      activityVOS: [{ ...votedata }],
+    });
+  };
+
   // 上传图片部分
 
   return (
     <div className="singup">
       <div className="singup_item">
+        <Button onClick={voteformfun}> 55</Button>
         <Form
+          form={voteform}
           name="basicInfo"
           labelCol={{
             span: 0,
@@ -122,19 +187,17 @@ export default function (props) {
                       },
                     ]}
                   >
-                    <Space direction="vertical" size="large">
-                      <RangePicker
-                        size="large"
-                        showTime={{ format: 'HH:mm' }}
-                        format="YYYY-MM-DD HH:mm"
-                        onChange={onChangeTime}
-                        onOk={onOk}
-                      />
-                    </Space>
+                    <RangePicker
+                      size="large"
+                      showTime={{ format: 'HH:mm' }}
+                      format="YYYY-MM-DD HH:mm"
+                      onChange={onChangeTime}
+                      onOk={onOk}
+                    />
                   </Form.Item>
                 </Col>
                 <Col span={10} offset={4}>
-                  <Form.Item name="numberLimit" label="投票方式">
+                  <Form.Item name="voteWay" label="投票方式">
                     <Cascader
                       options={options}
                       onChange={chosevoid}
@@ -147,19 +210,16 @@ export default function (props) {
           </div>
           <div className="form_item">
             <h1>投票对象</h1>
-            <div className="item_botder">
-              <Form.List name="toupiao">
+            <div className="item_botder1">
+              <Form.List name="picarr">
                 {(fields, { add, remove }) => (
                   <>
                     {fields.map(({ key, name, fieldKey, ...restField }) => (
-                      <Space
-                        key={key}
-                        style={{ display: 'flex', marginBottom: 8 }}
-                        align="baseline"
-                      >
+                      <div className="item_botder2" key={key}>
                         <Row>
                           <Col span={10}>
                             <Form.Item
+                              label="名称"
                               {...restField}
                               name={[name, 'name']}
                               fieldKey={[fieldKey, 'name']}
@@ -194,28 +254,22 @@ export default function (props) {
                         <Row>
                           <Col span={10}>
                             <Form.Item
-                              label="图片"
-                              {...restField}
-                              name={[name, 'pic']}
+                              // name="picture"
+                              label="活动图"
                               fieldKey={[fieldKey, 'pic']}
-                              rules={[
-                                {
-                                  required: true,
-                                  message: '请输入上传图片!',
-                                },
-                              ]}
                             >
                               <Upload
+                                name="multipartFile"
                                 listType="picture-card"
                                 className="avatar-uploader"
                                 action="/campus/campusweb/upload/pictureUpload"
                                 showUploadList={false}
                                 beforeUpload={beforeUpload}
-                                onChange={upPicfun}
+                                onChange={upPicfun.bind(this, fieldKey)}
                               >
-                                {imgcont.pictureUrl ? (
+                                {imgcont[fieldKey]?.pictureUrl ? (
                                   <img
-                                    src={imgcont.pictureUrl}
+                                    src={imgcont[fieldKey].pictureUrl}
                                     alt="avatar"
                                     style={{ width: '100%' }}
                                   />
@@ -224,31 +278,16 @@ export default function (props) {
                                 )}
                               </Upload>
                               <p>
-                                <ExclamationCircleOutlined />
-                                支持扩展名:jpg,jpeg,png
+                                <ExclamationCircleOutlined
+                                  style={{ color: '#ffb659' }}
+                                />
+                                推荐尺寸:1035*261
                               </p>
                             </Form.Item>
                           </Col>
                         </Row>
-
-                        {/* <Form.Item
-                        {...restField}
-                        name={[name, 'first']}
-                        fieldKey={[fieldKey, 'first']}
-                      >
-                        <Input
-                          size="large"
-                          placeholder="请输入项目名称,如爱好"
-                        />
-                      </Form.Item> */}
-
-                        {/* <DeleteOutlined
-                        style={{ color: '#df4833' }}
-                        onClick={() => remove(name)}
-                      /> */}
-                      </Space>
+                      </div>
                     ))}
-
                     <Form.Item>
                       <Button
                         style={{
@@ -271,4 +310,6 @@ export default function (props) {
       </div>
     </div>
   );
-}
+});
+
+export default Vote;

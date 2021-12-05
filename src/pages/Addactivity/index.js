@@ -2,9 +2,9 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-03 16:02:16
+ * @LastEditTime: 2021-12-06 00:59:29
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
 import FlowTwo from './components/FlowTwo/index';
 import Flowpath from './components/Flowpath/index';
@@ -13,7 +13,6 @@ import { Button } from 'antd';
 import './index.less';
 import request from 'umi-request';
 export default function (props) {
-  const [state, setState] = useState();
   const [speed, setSpeed] = useState(1);
   // 创建活动参数
   const [actdata, setActdata] = useState({
@@ -38,12 +37,20 @@ export default function (props) {
     activityVOS: [], //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
   });
 
+  const cRef = useRef(null);
+
   useEffect(() => {}, []);
 
   const nextSpeed = () => {
     speed == 1 ? setSpeed(2) : setSpeed(1);
   };
   const saveDraft = () => {
+    if (cRef.current) {
+      cRef.current.basicformFun();
+      // cRef.current.basicformFun1();
+      // cRef.current.voteformfun();
+    }
+
     let data = actdata;
     console.log(2, data);
     request
@@ -62,9 +69,17 @@ export default function (props) {
       </div>
       <div className="flow_content">
         {speed == 1 ? (
-          <FlowOne actdata={actdata} setActdata={setActdata}></FlowOne>
+          <FlowOne
+            ref={cRef}
+            actdata={actdata}
+            setActdata={setActdata}
+          ></FlowOne>
         ) : (
-          <FlowTwo actdata={actdata} setActdata={setActdata}></FlowTwo>
+          <FlowTwo
+            ref={cRef}
+            actdata={actdata}
+            setActdata={setActdata}
+          ></FlowTwo>
         )}
 
         <div className="flow_tab">

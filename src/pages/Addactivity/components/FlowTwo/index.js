@@ -2,9 +2,9 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-03 16:23:56
+ * @LastEditTime: 2021-12-06 01:07:16
  */
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Select, Collapse, Button } from 'antd';
 import { CaretRightOutlined } from '@ant-design/icons';
 import '../../index.less';
@@ -14,8 +14,9 @@ import SignUp from './components/SignUp';
 import Vote from './components/Vote';
 import Ticket from './components/Ticket';
 
-export default function (props) {
+const FlowTwo = forwardRef((props, ref) => {
   const { actdata, setActdata } = props;
+  const cRef = useRef(null);
   console.log('two组件的', props);
   const [selectedItems, setSelectedItems] = useState([]);
 
@@ -107,7 +108,11 @@ export default function (props) {
             >
               <div className="active_item">
                 <div className="inner_action_item">
-                  <SignUp actdata={actdata} setActdata={setActdata} />
+                  <SignUp
+                    ref={cRef}
+                    actdata={actdata}
+                    setActdata={setActdata}
+                  />
                 </div>
               </div>
             </Panel>
@@ -130,7 +135,7 @@ export default function (props) {
             >
               <div className="active_item">
                 <div className="inner_action_item">
-                  <Vote />
+                  <Vote ref={cRef} />
                 </div>
               </div>
             </Panel>
@@ -163,4 +168,5 @@ export default function (props) {
       </div>
     </div>
   );
-}
+});
+export default FlowTwo;

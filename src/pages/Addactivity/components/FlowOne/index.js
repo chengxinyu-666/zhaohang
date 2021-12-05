@@ -2,10 +2,15 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-03 15:51:14
+ * @LastEditTime: 2021-12-06 00:50:18
  */
 
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import {
   Form,
   Input,
@@ -31,11 +36,15 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
-export default function (props) {
+const FlowOne = forwardRef((props, ref) => {
   const { actdata, setActdata } = props;
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
 
   // 调用表单提交
+  useImperativeHandle(ref, () => ({
+    basicformFun,
+  }));
+
   const basicformFun = async () => {
     let basicformdata = await basicform.validateFields();
 
@@ -152,7 +161,7 @@ export default function (props) {
     if (info.file?.response?.code == 200 && id == 1) {
       setActdata({
         ...actdata,
-        pictureKey: info.file.response.data.imgUrl,
+        pictureUrl: info.file.response.data.imgUrl,
         pictureKey: info.file.response.data.imgKey,
       });
       setImgcont({
@@ -325,12 +334,6 @@ export default function (props) {
                   <Form.Item
                     // name="picture"
                     label="活动图"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: '请输入上传活动图!',
-                    //     },
-                    // ]}
                   >
                     <Upload
                       name="multipartFile"
@@ -471,4 +474,6 @@ export default function (props) {
       </>
     </div>
   );
-}
+});
+
+export default FlowOne;

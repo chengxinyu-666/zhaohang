@@ -2,9 +2,14 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-05 03:07:00
+ * @LastEditTime: 2021-12-06 00:53:27
  */
-import React, { useState, useEffect } from 'react';
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from 'react';
 import { Form, Input, Row, Col, DatePicker, Space, Tag, Button } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
 
@@ -28,8 +33,7 @@ const tagsData = [
   '特长',
   '备注',
 ];
-
-export default function (props) {
+const SignUp = forwardRef((props, ref) => {
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
   const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
 
@@ -40,6 +44,10 @@ export default function (props) {
   console.log('two孙子组件的', props);
 
   // 调用表单提交
+  useImperativeHandle(ref, () => ({
+    basicformFun1,
+  }));
+
   const basicformFun1 = async () => {
     console.log('sig', signdata);
     let basicformdata = await basicform.validateFields();
@@ -236,4 +244,6 @@ export default function (props) {
       </div>
     </div>
   );
-}
+});
+
+export default SignUp;

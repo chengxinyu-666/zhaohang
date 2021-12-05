@@ -74,3 +74,9 @@
   padding: 20px;
   border-radius: 3px;
 }
+.singup .singup_item .form_item .item_botder2 {
+  border: 1px solid #d9d9d9;
+  padding: 20px;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
