@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 00:53:27
+ * @LastEditTime: 2021-12-06 16:58:17
  */
 import React, {
   useState,
@@ -12,8 +12,6 @@ import React, {
 } from 'react';
 import { Form, Input, Row, Col, DatePicker, Space, Tag, Button } from 'antd';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons';
-
-import moment from 'moment';
 
 import '../../../index.less';
 const { RangePicker } = DatePicker;
@@ -37,53 +35,7 @@ const SignUp = forwardRef((props, ref) => {
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
   const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
 
-  const [signdata, setSigndata] = useState({
-    activityType: 1,
-  });
-  const { actdata, setActdata } = props;
-  console.log('two孙子组件的', props);
-
-  // 调用表单提交
-  useImperativeHandle(ref, () => ({
-    basicformFun1,
-  }));
-
-  const basicformFun1 = async () => {
-    console.log('sig', signdata);
-    let basicformdata = await basicform.validateFields();
-
-    basicformdata.startDate = moment(basicformdata.activitTime[0]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-    basicformdata.endDate = moment(basicformdata.activitTime[1]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-    delete basicformdata.activitTime;
-    let optionalEntryForms = [];
-
-    if (basicformdata.optionalEntryFormsdata) {
-      basicformdata.optionalEntryFormsdata.forEach((item) => {
-        optionalEntryForms.push({
-          key: item.key,
-          value: '',
-        });
-      });
-    }
-    if (!basicformdata.numberLimit) {
-      basicformdata.numberLimit = '';
-    }
-    basicformdata.optionalEntryForms = optionalEntryForms;
-    delete basicformdata.optionalEntryFormsdata;
-    basicformdata.requiredEntryForms = selectedTags;
-    setSigndata({
-      ...signdata,
-      ...basicformdata,
-    });
-    setActdata({
-      ...actdata,
-      activityVOS: [{ ...signdata }],
-    });
-  };
+  const { actdata, setActdata, signdata, setSigndata } = props;
 
   const basicInfoFun = (value) => {
     console.log('基本信息时间', value);
@@ -94,6 +46,8 @@ const SignUp = forwardRef((props, ref) => {
   function onChangeTime(value, dateString) {
     console.log('开始时间', value, '结束时间 ', dateString);
   }
+
+  // 切换选项
   const handleChange = (tag, checked) => {
     if (checked) {
       setSelectedTags([
@@ -106,14 +60,18 @@ const SignUp = forwardRef((props, ref) => {
     } else {
       setSelectedTags(selectedTags.filter((t) => t.key !== tag));
     }
+
+    setSigndata({
+      ...signdata,
+      requiredEntryForms: selectedTags,
+    });
   };
 
   return (
     <div className="singup">
       <div className="singup_item">
-        <Button onClick={basicformFun1}> 46</Button>
         <Form
-          form={basicform}
+          form={props.SignupForm}
           name="basicInfo"
           labelCol={{
             span: 0,

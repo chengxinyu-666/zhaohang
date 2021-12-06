@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 01:15:19
+ * @LastEditTime: 2021-12-06 17:02:56
  */
 import React, {
   useState,
@@ -29,12 +29,11 @@ import {
   PlusOutlined,
 } from '@ant-design/icons';
 import '../../../index.less';
-import request from 'umi-request';
 import beforeUpload from '@/utils/beforeUpload';
+import Myapi from '@/api';
 const { RangePicker } = DatePicker;
 
 const Vote = forwardRef((props, ref) => {
-  const [voteform] = Form.useForm(); //投票表单
   const [votedata, setVotedata] = useState({
     activityType: 2,
   });
@@ -110,43 +109,52 @@ const Vote = forwardRef((props, ref) => {
     </div>
   );
 
-  useImperativeHandle(ref, () => ({
-    voteformfun,
-  }));
+  // useImperativeHandle(ref, () => ({
+  //   voteformfun,
+  // }));
 
   // 调用表单提交
-  const voteformfun = async () => {
-    let voteformdata = await voteform.validateFields();
-    voteformdata.startDate = moment(voteformdata.activitTime[0]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-    voteformdata.endDate = moment(voteformdata.activitTime[1]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-    voteformdata.voteWay = voteformdata.voteWay[0];
+  // const voteformfun = async () => {
+  //   let voteformdata = await voteform.validateFields();
+  //   voteformdata.startDate = moment(voteformdata.activitTime[0]).format(
+  //     'YYYY-MM-DD HH:mm',
+  //   );
+  //   voteformdata.endDate = moment(voteformdata.activitTime[1]).format(
+  //     'YYYY-MM-DD HH:mm',
+  //   );
+  //   voteformdata.voteWay = voteformdata.voteWay[0];
 
-    let voteObjectVOS = voteformdata.picarr.map((item, idx) => {
-      return {
-        ...item,
-        ...imgcont[idx],
-      };
-    });
-    voteformdata.voteObjectVOS = voteObjectVOS;
+  //   let voteObjectVOS = voteformdata.picarr.map((item, idx) => {
+  //     return {
+  //       ...item,
+  //       ...imgcont[idx],
+  //     };
+  //   });
+  //   voteformdata.voteObjectVOS = voteObjectVOS;
 
-    delete voteformdata.picarr;
-    delete voteformdata.activitTime;
-    console.log('basicformdata', voteformdata);
-    setVotedata({
-      ...votedata,
-      ...voteformdata,
-      dayVoteLimit: '9999999',
-      singlePlayerLimit: '9999999',
-    });
+  //   delete voteformdata.picarr;
+  //   delete voteformdata.activitTime;
+  //   console.log('basicformdata', voteformdata);
+  //   setVotedata({
+  //     ...votedata,
+  //     ...voteformdata,
+  //     dayVoteLimit: '9999999',
+  //     singlePlayerLimit: '9999999',
+  //   });
 
-    setActdata({
-      ...actdata,
-      activityVOS: [{ ...votedata }],
-    });
+  //   setActdata({
+  //     ...actdata,
+  //     activityVOS: [{ ...votedata }],
+  //   });
+  // };
+
+  const normFile = (e) => {
+    console.log('Upload event:', e);
+    if (Array.isArray(e)) {
+      return e;
+    }
+
+    return e && e.fileList;
   };
 
   // 上传图片部分
@@ -154,9 +162,9 @@ const Vote = forwardRef((props, ref) => {
   return (
     <div className="singup">
       <div className="singup_item">
-        <Button onClick={voteformfun}> 55</Button>
+        {/* <Button onClick={voteformfun}> 55</Button> */}
         <Form
-          form={voteform}
+          form={props.voteFormdata}
           name="basicInfo"
           labelCol={{
             span: 0,
@@ -256,13 +264,15 @@ const Vote = forwardRef((props, ref) => {
                             <Form.Item
                               // name="picture"
                               label="活动图"
+                              valuePropName="pictureList"
+                              getValueFromEvent={normFile}
                               fieldKey={[fieldKey, 'pic']}
                             >
                               <Upload
                                 name="multipartFile"
                                 listType="picture-card"
                                 className="avatar-uploader"
-                                action="/campus/campusweb/upload/pictureUpload"
+                                action={Myapi.picupUrl}
                                 showUploadList={false}
                                 beforeUpload={beforeUpload}
                                 onChange={upPicfun.bind(this, fieldKey)}

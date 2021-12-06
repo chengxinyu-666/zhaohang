@@ -2,16 +2,17 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 00:59:29
+ * @LastEditTime: 2021-12-06 17:08:26
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
 import FlowTwo from './components/FlowTwo/index';
 import Flowpath from './components/Flowpath/index';
-import { Button } from 'antd';
-
+import { message, Button, Form } from 'antd';
+import moment from 'moment';
 import './index.less';
 import request from 'umi-request';
+import { useForm } from 'antd/lib/form/Form';
 export default function (props) {
   const [speed, setSpeed] = useState(1);
   // 创建活动参数
@@ -39,27 +40,106 @@ export default function (props) {
 
   const cRef = useRef(null);
 
+  const [baseForm] = Form.useForm(); //第一个步骤表单数据
+  const [SignupForm] = Form.useForm(); //第二个步骤报名表单数据
+  const [voteFormdata] = Form.useForm(); //投票表单数据
+
+  const [signdata, setSigndata] = useState({
+    //报名总数居
+    activityType: 1,
+  });
+
   useEffect(() => {}, []);
 
   const nextSpeed = () => {
     speed == 1 ? setSpeed(2) : setSpeed(1);
+    form1datapush();
   };
-  const saveDraft = () => {
-    if (cRef.current) {
-      cRef.current.basicformFun();
-      // cRef.current.basicformFun1();
-      // cRef.current.voteformfun();
-    }
-
-    let data = actdata;
-    console.log(2, data);
-    request
-      .post('/campus/campusweb/activity/saveDrafts', {
-        data,
-      })
-      .then(function (res) {
-        console.log(res);
+  // 整理表单1的数据
+  function form1datapush() {
+    let dataFormbase = baseForm.getFieldsValue();
+    delete dataFormbase.huodongshijian;
+    if (dataFormbase.scheduleVOS) {
+      let newArr = [];
+      dataFormbase.scheduleVOS.forEach((item) => {
+        newArr.push({
+          scheduleName: item.scheduleName,
+          scheduleDate: moment(item.scheduleDate).format('YYYY-MM-DD HH:mm'),
+        });
       });
+      dataFormbase.scheduleVOS = newArr;
+    }
+    setActdata({
+      ...actdata,
+      ...dataFormbase,
+    });
+  }
+
+  // 整理表单2(报名)的数据
+  function form1datapus2push() {
+    let dataFormsign = SignupForm.getFieldsValue();
+    if (dataFormsign.activitTime) {
+      dataFormsign.startDate = moment(dataFormsign.activitTime[0]).format(
+        'YYYY-MM-DD HH:mm',
+      );
+      dataFormsign.endDate = moment(dataFormsign.activitTime[1]).format(
+        'YYYY-MM-DD HH:mm',
+      );
+      delete dataFormsign.activitTime;
+    }
+    if (dataFormsign.optionalEntryFormsdata) {
+      let optionalEntryForms = [];
+      dataFormsign.optionalEntryFormsdata.forEach((item) => {
+        optionalEntryForms.push({
+          key: item.key,
+          value: '',
+        });
+      });
+      dataFormsign.optionalEntryForms = optionalEntryForms;
+      delete dataFormsign.optionalEntryFormsdata;
+    }
+    setActdata({
+      ...actdata,
+      activityVOS: [
+        ...actdata.activityVOS,
+        {
+          ...signdata,
+          ...dataFormsign,
+        },
+      ],
+    });
+  }
+  //整理表单3(投票)的数据
+  function form1datapus3push() {
+    let dataFormvote = voteFormdata.getFieldsValue();
+    console.log('voteFormdata', dataFormvote);
+  }
+
+  const saveDraft = () => {
+    //  form1datapush()
+    form1datapus3push();
+
+    // console.log('SignupForm',dataFormsign);
+    // console.log('voteFormdata',dataFormvote);
+
+    //   let data = actdata;
+    //   console.log(2, data);
+    //   request
+    //     .post('/campus/campusweb/activity/saveDrafts', {
+    //       data,
+    //     })
+    //     .then(function (res) {
+    //       console.log(res);
+    //       if (res.code==601) {
+    //         message.info(res.message);
+    //       }
+
+    //     });
+  };
+
+  const guancha = async () => {
+    console.log('全部总数据', actdata);
+    console.log('报名单独数据', signdata);
   };
 
   return (
@@ -72,13 +152,18 @@ export default function (props) {
           <FlowOne
             ref={cRef}
             actdata={actdata}
+            baseForm={baseForm}
             setActdata={setActdata}
           ></FlowOne>
         ) : (
           <FlowTwo
             ref={cRef}
+            SignupForm={SignupForm}
+            voteFormdata={voteFormdata}
             actdata={actdata}
             setActdata={setActdata}
+            signdata={signdata}
+            setSigndata={setSigndata}
           ></FlowTwo>
         )}
 
@@ -99,6 +184,7 @@ export default function (props) {
           )}
           <Button>预览</Button>
           <Button onClick={saveDraft}>保存草稿</Button>
+          <Button onClick={guancha}>观察数据</Button>
         </div>
       </div>
     </div>

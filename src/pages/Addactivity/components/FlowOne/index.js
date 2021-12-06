@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 00:50:18
+ * @LastEditTime: 2021-12-06 15:47:49
  */
 
 import React, {
@@ -33,50 +33,13 @@ import getBase64 from '@/utils/getBase64';
 import beforeUpload from '@/utils/beforeUpload';
 import request from 'umi-request';
 import moment from 'moment';
+import Myapi from '@/api';
 const { RangePicker } = DatePicker;
 const { TextArea } = Input;
 
 const FlowOne = forwardRef((props, ref) => {
   const { actdata, setActdata } = props;
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
-
-  // 调用表单提交
-  useImperativeHandle(ref, () => ({
-    basicformFun,
-  }));
-
-  const basicformFun = async () => {
-    let basicformdata = await basicform.validateFields();
-
-    if (basicformdata.scheduleVOS) {
-      let newArr = [];
-      basicformdata.scheduleVOS.forEach((item) => {
-        newArr.push({
-          scheduleName: item.scheduleName,
-          scheduleDate: moment(item.scheduleDate).format('YYYY-MM-DD HH:mm'),
-        });
-      });
-      basicformdata.scheduleVOS = newArr;
-    }
-
-    basicformdata.startDate = moment(basicformdata.huodongshijian[0]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-    basicformdata.endDate = moment(basicformdata.huodongshijian[1]).format(
-      'YYYY-MM-DD HH:mm',
-    );
-
-    delete basicformdata.huodongshijian,
-      setActdata({
-        ...actdata,
-        ...basicformdata,
-      });
-    console.log('aaa', basicformdata);
-  };
-
-  const onFinish = (values) => {
-    console.log('Received values of form:', values);
-  };
 
   const [options, setOptions] = useState([]);
 
@@ -97,6 +60,7 @@ const FlowOne = forwardRef((props, ref) => {
       });
   }, []);
 
+  // 城市参数
   const onChange3 = (value, selectedOptions) => {
     console.log(1, value.length);
     if (value.length == 2) {
@@ -108,6 +72,7 @@ const FlowOne = forwardRef((props, ref) => {
     }
   };
 
+  // 获取地区
   const loadData = (selectedOptions) => {
     const targetOption = selectedOptions[selectedOptions.length - 1];
     targetOption.loading = true;
@@ -136,12 +101,11 @@ const FlowOne = forwardRef((props, ref) => {
   // 以上是 地区选择部分，
 
   function onChangeTime(value, dateString) {
-    console.log('开始时间', dateString);
-    // setActdata({
-    //   ...actdata,
-    //   startDate: dateString[0],
-    //   endDate: dateString[1],
-    // });
+    setActdata({
+      ...actdata,
+      startDate: dateString[0],
+      endDate: dateString[1],
+    });
   }
 
   //   以上活动时间组件部分
@@ -217,11 +181,10 @@ const FlowOne = forwardRef((props, ref) => {
     <div className="flow_one">
       <>
         <div className="innerFlowpath">
-          <Button onClick={basicformFun}> 12</Button>
           <h3>请填写活动的基本信息</h3>
           <div className="active_box1">
             <Form
-              form={basicform}
+              form={props.baseForm}
               name="basic"
               labelCol={{
                 span: 0,
@@ -254,7 +217,7 @@ const FlowOne = forwardRef((props, ref) => {
                 </Col>
                 <Col span={10} offset={4}>
                   <Form.Item
-                    // name="Code"
+                    //  name="Code"
                     label="活动地区"
                     rules={[
                       {
@@ -289,7 +252,6 @@ const FlowOne = forwardRef((props, ref) => {
                       },
                     ]}
                   >
-                    {/* <Space direction="vertical" size="large"> */}
                     <RangePicker
                       size="large"
                       showTime={{ format: 'HH:mm' }}
@@ -297,7 +259,6 @@ const FlowOne = forwardRef((props, ref) => {
                       showTime
                       onChange={onChangeTime}
                     />
-                    {/* </Space> */}
                   </Form.Item>
                 </Col>
                 <Col span={10} offset={4}>
@@ -339,7 +300,7 @@ const FlowOne = forwardRef((props, ref) => {
                       name="multipartFile"
                       listType="picture-card"
                       className="avatar-uploader"
-                      action="/campus/campusweb/upload/pictureUpload"
+                      action={Myapi.picupUrl}
                       showUploadList={false}
                       beforeUpload={beforeUpload}
                       onChange={upPicfun.bind(this, 1)}

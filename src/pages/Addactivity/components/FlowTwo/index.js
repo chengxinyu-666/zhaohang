@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 01:07:16
+ * @LastEditTime: 2021-12-06 16:16:33
  */
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -15,7 +15,8 @@ import Vote from './components/Vote';
 import Ticket from './components/Ticket';
 
 const FlowTwo = forwardRef((props, ref) => {
-  const { actdata, setActdata } = props;
+  const { actdata, setActdata, signdata, setSigndata } = props;
+
   const cRef = useRef(null);
   console.log('two组件的', props);
   const [selectedItems, setSelectedItems] = useState([]);
@@ -111,7 +112,10 @@ const FlowTwo = forwardRef((props, ref) => {
                   <SignUp
                     ref={cRef}
                     actdata={actdata}
+                    SignupForm={props.SignupForm}
                     setActdata={setActdata}
+                    signdata={signdata}
+                    setSigndata={setSigndata}
                   />
                 </div>
               </div>
@@ -135,7 +139,12 @@ const FlowTwo = forwardRef((props, ref) => {
             >
               <div className="active_item">
                 <div className="inner_action_item">
-                  <Vote ref={cRef} />
+                  <Vote
+                    ref={cRef}
+                    actdata={actdata}
+                    voteFormdata={props.voteFormdata}
+                    setActdata={setActdata}
+                  />
                 </div>
               </div>
             </Panel>
