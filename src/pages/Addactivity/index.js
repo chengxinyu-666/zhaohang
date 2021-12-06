@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 18:21:02
+ * @LastEditTime: 2021-12-06 18:25:49
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -116,7 +116,6 @@ export default function (props) {
     setActdata({
       ...actdata,
       activityVOS: [
-        actdata.activityVOS,
         {
           ...signdata,
           ...dataFormsign,
@@ -149,7 +148,6 @@ export default function (props) {
       setActdata({
         ...actdata,
         activityVOS: [
-          actdata.activityVOS,
           {
             ...signdata,
             ...dataFormvote,
@@ -179,7 +177,9 @@ export default function (props) {
       .then(function (res) {
         console.log(res);
         if (res.code == 601) {
-          message.info(res.message);
+          message.error(res.message);
+        } else if (res.code == 200) {
+          message.success(res.message);
         }
       });
   };
