@@ -61,6 +61,20 @@
             }
         ]
     },
+
+
+    voteWay: ["1"]
+picarr: Array(2)
+lastIndex: (...)
+lastItem: (...)
+0: {name: "22", instructions: "33"}
+1: {name: "445", instructions: "353"}
+length: 2
+__proto__: Array(0)
+startDate: "2021-12-07 18:02"
+endDate: "2021-12-24 18:02"
+
+
     {
         "activityType": 3,
         "startDate": "2020-07-19 15:00",

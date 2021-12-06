@@ -2,14 +2,9 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 17:02:56
+ * @LastEditTime: 2021-12-06 17:56:51
  */
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from 'react';
+import React, { useState, useEffect, forwardRef } from 'react';
 import moment from 'moment';
 import {
   Form,
@@ -34,10 +29,10 @@ import Myapi from '@/api';
 const { RangePicker } = DatePicker;
 
 const Vote = forwardRef((props, ref) => {
-  const [votedata, setVotedata] = useState({
-    activityType: 2,
-  });
-  const { actdata, setActdata } = props;
+  const { actdata, setActdata, votedata, setVotedata, imgcont, setImgcont } =
+    props;
+  const [votnum, setVotnum] = useState(0);
+
   const basicInfoFun = (value) => {
     console.log('基本信息时间', value);
   };
@@ -57,27 +52,15 @@ const Vote = forwardRef((props, ref) => {
     },
     {
       value: '2',
-      label: '可投2次',
-    },
-    {
-      value: '3',
-      label: '可投3次',
+      label: '每日均可投票',
     },
   ];
   function chosevoid(value) {
-    console.log(value);
+    setVotnum(value[0]);
+    console.log(votnum);
   }
 
   //   上传图片部分
-
-  //   图片上传参数
-  const [imgcont, setImgcont] = useState([
-    {
-      loading: false,
-      pictureKey: '',
-      pictureUrl: '',
-    },
-  ]);
 
   function upPicfun(id, info) {
     console.log('图片上传', imgcont, info, id);
@@ -108,10 +91,6 @@ const Vote = forwardRef((props, ref) => {
       <div style={{ marginTop: 8 }}>添加图片</div>
     </div>
   );
-
-  // useImperativeHandle(ref, () => ({
-  //   voteformfun,
-  // }));
 
   // 调用表单提交
   // const voteformfun = async () => {
@@ -162,7 +141,6 @@ const Vote = forwardRef((props, ref) => {
   return (
     <div className="singup">
       <div className="singup_item">
-        {/* <Button onClick={voteformfun}> 55</Button> */}
         <Form
           form={props.voteFormdata}
           name="basicInfo"
@@ -214,6 +192,42 @@ const Vote = forwardRef((props, ref) => {
                   </Form.Item>
                 </Col>
               </Row>
+              {votnum != '1' ? (
+                <>
+                  <Row>
+                    <Col span={10}>
+                      <Form.Item
+                        name="dayVoteLimit"
+                        label="单日可投上限"
+                        rules={[
+                          {
+                            required: true,
+                            message: '请输入单日可投上限!',
+                          },
+                        ]}
+                      >
+                        <Input placeholder="请输入1-9999999999的整数"></Input>
+                      </Form.Item>
+                    </Col>
+                    <Col span={10} offset={4}>
+                      <Form.Item
+                        name="singlePlayerLimit"
+                        label="重复投票上限"
+                        rules={[
+                          {
+                            required: true,
+                            message: '重复投票上限!',
+                          },
+                        ]}
+                      >
+                        <Input placeholder="请输入1-9999999999的整数"></Input>
+                      </Form.Item>
+                    </Col>
+                  </Row>
+                </>
+              ) : (
+                ''
+              )}
             </div>
           </div>
           <div className="form_item">

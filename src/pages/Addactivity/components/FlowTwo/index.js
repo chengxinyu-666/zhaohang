@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 16:16:33
+ * @LastEditTime: 2021-12-06 17:58:41
  */
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -15,7 +15,16 @@ import Vote from './components/Vote';
 import Ticket from './components/Ticket';
 
 const FlowTwo = forwardRef((props, ref) => {
-  const { actdata, setActdata, signdata, setSigndata } = props;
+  const {
+    actdata,
+    setActdata,
+    signdata,
+    setSigndata,
+    votedata,
+    setVotedata,
+    imgcont,
+    setImgcont,
+  } = props;
 
   const cRef = useRef(null);
   console.log('two组件的', props);
@@ -144,6 +153,10 @@ const FlowTwo = forwardRef((props, ref) => {
                     actdata={actdata}
                     voteFormdata={props.voteFormdata}
                     setActdata={setActdata}
+                    votedata={votedata}
+                    setVotedata={setVotedata}
+                    imgcont={imgcont}
+                    setImgcont={setImgcont}
                   />
                 </div>
               </div>

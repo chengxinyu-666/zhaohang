@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 17:08:26
+ * @LastEditTime: 2021-12-06 18:21:02
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -48,6 +48,21 @@ export default function (props) {
     //报名总数居
     activityType: 1,
   });
+
+  const [votedata, setVotedata] = useState({
+    //投票总数据
+    activityType: 2,
+    voteObjectVOS: [],
+  });
+
+  //   投票  图片上传参数
+  const [imgcont, setImgcont] = useState([
+    {
+      loading: false,
+      pictureKey: '',
+      pictureUrl: '',
+    },
+  ]);
 
   useEffect(() => {}, []);
 
@@ -101,7 +116,7 @@ export default function (props) {
     setActdata({
       ...actdata,
       activityVOS: [
-        ...actdata.activityVOS,
+        actdata.activityVOS,
         {
           ...signdata,
           ...dataFormsign,
@@ -112,34 +127,65 @@ export default function (props) {
   //整理表单3(投票)的数据
   function form1datapus3push() {
     let dataFormvote = voteFormdata.getFieldsValue();
+    if (dataFormvote.voteWay) {
+      dataFormvote.voteWay = dataFormvote.voteWay[0];
+      if (dataFormvote.activitTime) {
+        dataFormvote.startDate = moment(dataFormvote.activitTime[0]).format(
+          'YYYY-MM-DD HH:mm',
+        );
+        dataFormvote.endDate = moment(dataFormvote.activitTime[1]).format(
+          'YYYY-MM-DD HH:mm',
+        );
+        delete dataFormvote.activitTime;
+      }
+      if (dataFormvote.picarr.length == imgcont.length) {
+        let voteObjectVOS = dataFormvote.picarr.map((item, index) => {
+          return { ...item, ...imgcont[index] };
+        });
+        dataFormvote.voteObjectVOS = voteObjectVOS;
+        delete dataFormvote.lastItem;
+        delete dataFormvote.picarr;
+      }
+      setActdata({
+        ...actdata,
+        activityVOS: [
+          actdata.activityVOS,
+          {
+            ...signdata,
+            ...dataFormvote,
+          },
+        ],
+      });
+    }
+
     console.log('voteFormdata', dataFormvote);
   }
 
   const saveDraft = () => {
     //  form1datapush()
+    form1datapush();
+    form1datapus2push();
     form1datapus3push();
 
     // console.log('SignupForm',dataFormsign);
     // console.log('voteFormdata',dataFormvote);
 
-    //   let data = actdata;
-    //   console.log(2, data);
-    //   request
-    //     .post('/campus/campusweb/activity/saveDrafts', {
-    //       data,
-    //     })
-    //     .then(function (res) {
-    //       console.log(res);
-    //       if (res.code==601) {
-    //         message.info(res.message);
-    //       }
-
-    //     });
+    let data = actdata;
+    console.log(2, data);
+    request
+      .post('/campus/campusweb/activity/saveDrafts', {
+        data,
+      })
+      .then(function (res) {
+        console.log(res);
+        if (res.code == 601) {
+          message.info(res.message);
+        }
+      });
   };
 
   const guancha = async () => {
     console.log('全部总数据', actdata);
-    console.log('报名单独数据', signdata);
   };
 
   return (
@@ -164,6 +210,10 @@ export default function (props) {
             setActdata={setActdata}
             signdata={signdata}
             setSigndata={setSigndata}
+            votedata={votedata}
+            setVotedata={setVotedata}
+            imgcont={imgcont}
+            setImgcont={setImgcont}
           ></FlowTwo>
         )}
 
