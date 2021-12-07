@@ -20,9 +20,12 @@ import Table from '../Table';
 import { useHttpHook } from '@/hooks';
 import { CommonEnum } from '@/enums';
 import moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
 const { RangePicker } = DatePicker;
 
 const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
+  const dispatch = useDispatch();
+
   const [page, setPage] = useState(CommonEnum.PAGE);
 
   const [searchCriteria, setSearchCriteria] = useState({
@@ -46,6 +49,13 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
     },
     watch: [page.pageNum, activityStatus, searchCriteria, draft],
   });
+
+  useEffect(() => {
+    dispatch({
+      type: 'SWITCH_TABLEDATE',
+      tabledate: tabledate,
+    });
+  }, []);
 
   console.log('总tabledate', tabledate);
   const onFinish = (values) => {
@@ -115,9 +125,6 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
             </Col>
           </Row>
         </Form>
-        {/* <Button type="primary" htmlType="submit" onClick={aaa}>
-          搜索11
-        </Button> */}
       </div>
       <Table tabledate={tabledate} actitem={actitem}></Table>
     </div>

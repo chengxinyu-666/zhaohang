@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 23:29:19
+ * @LastEditTime: 2021-12-07 16:11:07
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -13,8 +13,17 @@ import moment from 'moment';
 import './index.less';
 import request from 'umi-request';
 import { useForm } from 'antd/lib/form/Form';
+import { useDispatch, useSelector } from 'react-redux';
+
 export default function (props) {
   const [speed, setSpeed] = useState(1);
+
+  const dispatch = useDispatch();
+  const tabledate = useSelector((state) => {
+    return state.tabledate;
+  });
+  console.log(435, tabledate);
+
   // 创建活动参数
   const [actdata, setActdata] = useState({
     activityName: '', //String	是	活动名称
@@ -113,16 +122,22 @@ export default function (props) {
       dataFormsign.optionalEntryForms = optionalEntryForms;
       delete dataFormsign.optionalEntryFormsdata;
     }
-
+    let arr = actdata.activityVOS;
+    if (arr.length != 0 && arr.some((item) => item.activityType == '1')) {
+      let idx = arr.findIndex((item) => item.activityType == '1');
+      arr[idx] = {
+        ...signdata,
+        ...dataFormsign,
+      };
+    } else {
+      arr.push({
+        ...signdata,
+        ...dataFormsign,
+      });
+    }
     setActdata({
       ...actdata,
-      activityVOS: [
-        ...actdata.activityVOS,
-        {
-          ...signdata,
-          ...dataFormsign,
-        },
-      ],
+      activityVOS: [...arr],
     });
   }
   //整理表单3(投票)的数据
@@ -147,15 +162,24 @@ export default function (props) {
         delete dataFormvote.lastItem;
         delete dataFormvote.picarr;
       }
+
+      let arr = actdata.activityVOS;
+      if (arr.length != 0 && arr.some((item) => item.activityType == '2')) {
+        let idx = arr.findIndex((item) => item.activityType == '2');
+        arr[idx] = {
+          ...votedata,
+          ...dataFormvote,
+        };
+      } else {
+        arr.push({
+          ...votedata,
+          ...dataFormvote,
+        });
+      }
+
       setActdata({
         ...actdata,
-        activityVOS: [
-          ...actdata.activityVOS,
-          {
-            ...signdata,
-            ...dataFormvote,
-          },
-        ],
+        activityVOS: [...arr],
       });
     }
 
@@ -163,16 +187,11 @@ export default function (props) {
   }
 
   const saveDraft = () => {
-    //  form1datapush()
     form1datapush();
     form1datapus2push();
     form1datapus3push();
 
-    // console.log('SignupForm',dataFormsign);
-    // console.log('voteFormdata',dataFormvote);
-
     let data = actdata;
-    console.log(2, data);
     request
       .post('/campus/campusweb/activity/saveDrafts', {
         data,

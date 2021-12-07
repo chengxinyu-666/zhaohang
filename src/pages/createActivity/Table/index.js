@@ -29,10 +29,6 @@ export default function (props) {
       title: '创建时间',
       dataIndex: 'startDate',
       key: 'id',
-
-      // onFilter: (value, record) => record.startDate.includes(value),
-      // sorter: (a, b) => a.startDate.length - b.startDate.length,
-      // sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
       ellipsis: true,
       align: 'center',
       className: 'fs',
@@ -41,10 +37,6 @@ export default function (props) {
       title: '活动时间',
       dataIndex: 'startDate',
       key: 'startDate',
-
-      // onFilter: (value, record) => record.startDate.includes(value),
-      // sorter: (a, b) => a.startDate.length - b.startDate.length,
-      // sortOrder: sortedInfo.columnKey === 'startDate' && sortedInfo.order,
       ellipsis: true,
       align: 'center',
       className: 'fs',
@@ -85,7 +77,7 @@ export default function (props) {
         <>
           {data.isDraft ? (
             <>
-              <a>编辑</a>
+              <a onClick={edit}>编辑</a>
               <a>删除</a>
             </>
           ) : activityStatus == 1 ? (
