@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 15:47:49
+ * @LastEditTime: 2021-12-07 21:39:49
  */
 
 import React, {
@@ -288,14 +288,10 @@ const FlowOne = forwardRef((props, ref) => {
                   </Form.Item>
                 </Col>
               </Row>
-
               {/* 下面是上传图片部分 */}
               <Row>
                 <Col span={10}>
-                  <Form.Item
-                    // name="picture"
-                    label="活动图"
-                  >
+                  <Form.Item name="multipartFile" label="活动图">
                     <Upload
                       name="multipartFile"
                       listType="picture-card"
@@ -324,7 +320,7 @@ const FlowOne = forwardRef((props, ref) => {
                 </Col>
                 <Col span={10} offset={4}>
                   <Form.Item
-                    // name="pictureUrl"
+                    name="thumbnail"
                     label="活动缩略图"
                     // rules={[
                     //     {
@@ -359,6 +355,7 @@ const FlowOne = forwardRef((props, ref) => {
                   </Form.Item>
                 </Col>
               </Row>
+
               <Row>
                 <Col span={10}>
                   <h3>

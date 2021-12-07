@@ -2,13 +2,14 @@
  * @Author: chengxinyu
  * @Date: 2021-12-07 15:14:20
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 16:22:01
+ * @LastEditTime: 2021-12-07 20:29:09
  */
 
 const initialState = {
   menuName: '首页',
   current: '123123数据',
   tabledate: ['54', '43'],
+  menulist: [],
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

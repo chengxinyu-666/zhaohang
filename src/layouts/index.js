@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:34:44
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 15:26:08
+ * @LastEditTime: 2021-12-07 22:47:03
  */
 
 import React, { useState, useEffect } from 'react';
@@ -12,8 +12,12 @@ import './index.less';
 // import store from '@/store/index';
 import { useLocation } from 'umi';
 import { Provider } from 'react-redux';
-import configureStore from '../store/index';
-const store = configureStore();
+import store from '../store/index';
+import { PersistGate } from 'redux-persist/lib/integration/react';
+import configStore from '../store/index';
+import { persistor } from '../store/index';
+
+// const store = store();
 
 function BasicLayout(props) {
   const location = useLocation();
@@ -21,22 +25,24 @@ function BasicLayout(props) {
 
   return (
     <Provider store={store}>
-      <div className="lay">
-        <div className="left_container">
-          <Menu
-            show={paths.includes(location.pathname)}
-            pathname={location.pathname}
-          ></Menu>
-        </div>
+      <PersistGate loading={null} persistor={persistor}>
+        <div className="lay">
+          <div className="left_container">
+            <Menu
+              show={paths.includes(location.pathname)}
+              pathname={location.pathname}
+            ></Menu>
+          </div>
 
-        <div className="right_container">
-          <HomeHeader
-            show={paths.includes(location.pathname)}
-            pathname={location.pathname}
-          ></HomeHeader>
-          {props.children}
+          <div className="right_container">
+            <HomeHeader
+              show={paths.includes(location.pathname)}
+              pathname={location.pathname}
+            ></HomeHeader>
+            {props.children}
+          </div>
         </div>
-      </div>
+      </PersistGate>
     </Provider>
   );
 }
