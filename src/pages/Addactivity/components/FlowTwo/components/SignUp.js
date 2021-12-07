@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 16:58:17
+ * @LastEditTime: 2021-12-07 18:28:48
  */
 import React, {
   useState,
@@ -60,7 +60,6 @@ const SignUp = forwardRef((props, ref) => {
     } else {
       setSelectedTags(selectedTags.filter((t) => t.key !== tag));
     }
-
     setSigndata({
       ...signdata,
       requiredEntryForms: selectedTags,

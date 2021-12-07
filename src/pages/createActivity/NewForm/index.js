@@ -50,12 +50,12 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
     watch: [page.pageNum, activityStatus, searchCriteria, draft],
   });
 
-  useEffect(() => {
+  setTimeout(() => {
     dispatch({
       type: 'SWITCH_TABLEDATE',
       tabledate: tabledate,
     });
-  }, []);
+  }, 10);
 
   console.log('总tabledate', tabledate);
   const onFinish = (values) => {

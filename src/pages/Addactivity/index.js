@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 16:11:07
+ * @LastEditTime: 2021-12-07 18:08:53
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -12,17 +12,26 @@ import { message, Button, Form } from 'antd';
 import moment from 'moment';
 import './index.less';
 import request from 'umi-request';
-import { useForm } from 'antd/lib/form/Form';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useLocation } from 'umi';
 export default function (props) {
+  const location = useLocation();
+
+  let activityBasicId = 0; //地址数据
   const [speed, setSpeed] = useState(1);
 
   const dispatch = useDispatch();
+  const cRef = useRef(null);
+  const [baseForm] = Form.useForm(); //第一个步骤表单数据
+  const [SignupForm] = Form.useForm(); //第二个步骤报名表单数据
+  const [voteFormdata] = Form.useForm(); //投票表单数据
+
+  // 仓库数据
   const tabledate = useSelector((state) => {
     return state.tabledate;
   });
-  console.log(435, tabledate);
+
+  console.log('仓库数据', tabledate);
 
   // 创建活动参数
   const [actdata, setActdata] = useState({
@@ -47,11 +56,45 @@ export default function (props) {
     activityVOS: [], //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
   });
 
-  const cRef = useRef(null);
+  useEffect(() => {
+    if (location.query.activityBasicId) {
+      let id = location.query.activityBasicId;
+      let arr1 = tabledate.rows.filter((item) => {
+        return item.activityBasicId == id;
+      });
+      console.log('arr1', arr1[0]);
+      const {
+        activityName,
+        activityContent,
+        activitySite,
+        activityOrganizers,
+        startDate,
+        endDate,
+        pictureKey,
+        thumbnailPictureKey,
+        thumbnailPictureUrl,
+        provinceCode,
+        cityCode,
+        bankCode,
+      } = { ...arr1[0] };
+      baseForm.setFieldsValue({
+        activityName,
+        activityContent,
+        activitySite,
+        activityOrganizers,
+        startDate,
+        endDate,
+        pictureKey,
+        thumbnailPictureKey,
+        thumbnailPictureUrl,
+        provinceCode,
+        cityCode,
+        bankCode,
+      });
+    }
+  }, []);
 
-  const [baseForm] = Form.useForm(); //第一个步骤表单数据
-  const [SignupForm] = Form.useForm(); //第二个步骤报名表单数据
-  const [voteFormdata] = Form.useForm(); //投票表单数据
+  console.log(324324, actdata);
 
   const [signdata, setSigndata] = useState({
     //报名总数居

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
 import { history } from 'umi';
 import '../index.less';
+
 export default function (props) {
   const [state, setState] = useState({
     filteredInfo: null,
@@ -72,12 +73,13 @@ export default function (props) {
     {
       title: '操作',
       dataIndex: 'activityStatus',
-      key: 'id',
+      // dataIndex: 'activityStatus',
+      key: 'activityBasicId',
       render: (activityStatus, data) => (
         <>
           {data.isDraft ? (
             <>
-              <a onClick={edit}>编辑</a>
+              <a onClick={() => edit(data.activityBasicId)}>编辑</a>
               <a>删除</a>
             </>
           ) : activityStatus == 1 ? (
@@ -133,6 +135,10 @@ export default function (props) {
       align: 'center',
     },
   ];
+
+  const edit = (id) => {
+    history.push('/addActivity?activityBasicId=' + id);
+  };
 
   const handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination.current, filters, sorter);
