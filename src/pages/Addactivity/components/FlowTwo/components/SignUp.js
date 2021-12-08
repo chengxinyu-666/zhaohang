@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-01 16:18:27
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 18:28:48
+ * @LastEditTime: 2021-12-08 16:13:18
  */
 import React, {
   useState,
@@ -33,9 +33,16 @@ const tagsData = [
 ];
 const SignUp = forwardRef((props, ref) => {
   const [basicform] = Form.useForm(); //第一个基本活动的表单,日程规划表单
-  const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
+  // const [selectedTags, setSelectedTags] = useState([]); //存放选中的参与者
 
-  const { actdata, setActdata, signdata, setSigndata } = props;
+  const {
+    actdata,
+    setActdata,
+    signdata,
+    setSigndata,
+    selectedTags,
+    setSelectedTags,
+  } = props;
 
   const basicInfoFun = (value) => {
     console.log('基本信息时间', value);
@@ -64,6 +71,8 @@ const SignUp = forwardRef((props, ref) => {
       ...signdata,
       requiredEntryForms: selectedTags,
     });
+
+    console.log('参与选中的数据', selectedTags);
   };
 
   return (

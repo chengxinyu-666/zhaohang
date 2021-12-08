@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-06 17:58:41
+ * @LastEditTime: 2021-12-08 16:15:38
  */
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -24,11 +24,15 @@ const FlowTwo = forwardRef((props, ref) => {
     setVotedata,
     imgcont,
     setImgcont,
+    selectedItems,
+    setSelectedItems,
+    selectedTags,
+    setSelectedTags,
   } = props;
 
   const cRef = useRef(null);
   console.log('two组件的', props);
-  const [selectedItems, setSelectedItems] = useState([]);
+  // const [selectedItems, setSelectedItems] = useState([]);
 
   const OPTIONS = ['报名', '投票', '门票', '签到', '抽奖']; //创建活动选项
 
@@ -41,21 +45,12 @@ const FlowTwo = forwardRef((props, ref) => {
       isSignIn: false,
       isLuckyDraw: false,
     };
-    if (a.includes('报名')) {
-      obj.isSignUp = true;
-    }
-    if (a.includes('投票')) {
-      obj.isVote = true;
-    }
-    if (a.includes('门票')) {
-      obj.isRobTickets = true;
-    }
-    if (a.includes('签到')) {
-      obj.isSignIn = true;
-    }
-    if (a.includes('抽奖')) {
-      obj.isLuckyDraw = true;
-    }
+    a.includes('报名') ? (obj.isSignUp = true) : null;
+    a.includes('投票') ? (obj.isVote = true) : null;
+    a.includes('门票') ? (obj.isRobTickets = true) : null;
+    a.includes('签到') ? (obj.isSignIn = true) : null;
+    a.includes('抽奖') ? (obj.isLuckyDraw = true) : null;
+
     setSelectedItems(a);
     setActdata({
       ...actdata,
@@ -125,6 +120,8 @@ const FlowTwo = forwardRef((props, ref) => {
                     setActdata={setActdata}
                     signdata={signdata}
                     setSigndata={setSigndata}
+                    selectedTags={selectedTags}
+                    setSelectedTags={setSelectedTags}
                   />
                 </div>
               </div>
