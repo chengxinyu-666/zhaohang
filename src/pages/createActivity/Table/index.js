@@ -2,8 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Table, Button, Space } from 'antd';
 import { history } from 'umi';
 import '../index.less';
+import request from 'umi-request';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function (props) {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     filteredInfo: null,
     sortedInfo: null,
@@ -137,7 +141,25 @@ export default function (props) {
   ];
 
   const edit = (id) => {
-    history.push('/addActivity?activityBasicId=' + id);
+    let data = {
+      activityBasicId: id,
+    };
+    request
+      .post('/campus/campusweb/activity/queryByUpdate', {
+        data,
+      })
+      .then(function (res) {
+        console.log('获取单挑数据', res);
+        if (res.code == 200) {
+          dispatch({
+            type: 'SWITCH_BACKFILL',
+            backfill: res.data,
+          });
+          history.push('/addActivity?activityBasicId=' + id);
+        }
+      });
+
+    // history.push('/addActivity?activityBasicId=' + id);
   };
 
   const handleChange = (pagination, filters, sorter) => {

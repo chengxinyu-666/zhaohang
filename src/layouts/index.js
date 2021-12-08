@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-24 10:34:44
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 22:47:03
+ * @LastEditTime: 2021-12-08 09:13:11
  */
 
 import React, { useState, useEffect } from 'react';
@@ -16,8 +16,7 @@ import store from '../store/index';
 import { PersistGate } from 'redux-persist/lib/integration/react';
 import configStore from '../store/index';
 import { persistor } from '../store/index';
-
-// const store = store();
+// 页面刷新本地仓库数据不消失
 
 function BasicLayout(props) {
   const location = useLocation();

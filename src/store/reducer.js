@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-07 15:14:20
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 20:29:09
+ * @LastEditTime: 2021-12-08 10:20:24
  */
 
 const initialState = {
@@ -10,6 +10,7 @@ const initialState = {
   current: '123123数据',
   tabledate: ['54', '43'],
   menulist: [],
+  backfill: [], //单条数据详情，用于回填
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
@@ -30,6 +31,11 @@ export default (state = initialState, action) => {
       return {
         ...state, // 保存上一个状态值的写法
         tabledate: action.tabledate,
+      };
+    case 'SWITCH_BACKFILL':
+      return {
+        ...state, // 保存上一个状态值的写法
+        backfill: action.backfill,
       };
     default:
       return { ...state };

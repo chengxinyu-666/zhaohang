@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 18:08:53
+ * @LastEditTime: 2021-12-08 10:31:52
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -27,11 +27,11 @@ export default function (props) {
   const [voteFormdata] = Form.useForm(); //投票表单数据
 
   // 仓库数据
-  const tabledate = useSelector((state) => {
-    return state.tabledate;
+  const backfill = useSelector((state) => {
+    return state.backfill;
   });
 
-  console.log('仓库数据', tabledate);
+  console.log('仓库数据', backfill);
 
   // 创建活动参数
   const [actdata, setActdata] = useState({
@@ -56,13 +56,14 @@ export default function (props) {
     activityVOS: [], //	List<Object>	是	活动对象集合报名、投票、抢票、签到、抽奖
   });
 
+  // 数据回填部分
   useEffect(() => {
-    if (location.query.activityBasicId) {
-      let id = location.query.activityBasicId;
-      let arr1 = tabledate.rows.filter((item) => {
-        return item.activityBasicId == id;
-      });
-      console.log('arr1', arr1[0]);
+    if (location.query.activityBasicId == backfill.activityBasicId) {
+      setTimeout(() => {
+        setActdata({
+          ...backfill,
+        });
+      }, 10);
       const {
         activityName,
         activityContent,
@@ -76,8 +77,12 @@ export default function (props) {
         provinceCode,
         cityCode,
         bankCode,
-      } = { ...arr1[0] };
+      } = { ...backfill };
+
+      console.log('整理后的参数', actdata);
       baseForm.setFieldsValue({
+        huodongshijian: [moment(startDate), moment(endDate)],
+        Code: [provinceCode, cityCode],
         activityName,
         activityContent,
         activitySite,
@@ -91,6 +96,8 @@ export default function (props) {
         cityCode,
         bankCode,
       });
+    } else {
+      message.error('数据错误，请联系管理员！');
     }
   }, []);
 
@@ -251,6 +258,8 @@ export default function (props) {
 
   const guancha = async () => {
     console.log('全部总数据', actdata);
+    let dataFormbase = baseForm.getFieldsValue();
+    console.log('观察表单1数据', dataFormbase);
   };
 
   return (

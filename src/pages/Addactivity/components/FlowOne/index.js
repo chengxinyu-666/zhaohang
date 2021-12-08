@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:41:59
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-07 21:39:49
+ * @LastEditTime: 2021-12-08 09:50:29
  */
 
 import React, {
@@ -101,6 +101,7 @@ const FlowOne = forwardRef((props, ref) => {
   // 以上是 地区选择部分，
 
   function onChangeTime(value, dateString) {
+    console.log(444, value);
     setActdata({
       ...actdata,
       startDate: dateString[0],
@@ -217,7 +218,7 @@ const FlowOne = forwardRef((props, ref) => {
                 </Col>
                 <Col span={10} offset={4}>
                   <Form.Item
-                    //  name="Code"
+                    name="Code"
                     label="活动地区"
                     rules={[
                       {
@@ -291,7 +292,16 @@ const FlowOne = forwardRef((props, ref) => {
               {/* 下面是上传图片部分 */}
               <Row>
                 <Col span={10}>
-                  <Form.Item name="multipartFile" label="活动图">
+                  <Form.Item
+                    name="multipartFile"
+                    label="活动图"
+                    rules={[
+                      {
+                        required: true,
+                        message: '请输入上传活动图!',
+                      },
+                    ]}
+                  >
                     <Upload
                       name="multipartFile"
                       listType="picture-card"
@@ -301,11 +311,11 @@ const FlowOne = forwardRef((props, ref) => {
                       beforeUpload={beforeUpload}
                       onChange={upPicfun.bind(this, 1)}
                     >
-                      {imgcont.pictureUrl ? (
+                      {actdata.pictureUrl ? (
                         <img
-                          src={imgcont.pictureUrl}
+                          src={actdata.pictureUrl}
                           alt="avatar"
-                          style={{ width: '100%' }}
+                          style={{ width: '102px', height: '102px' }}
                         />
                       ) : (
                         uploadButton1
@@ -322,12 +332,12 @@ const FlowOne = forwardRef((props, ref) => {
                   <Form.Item
                     name="thumbnail"
                     label="活动缩略图"
-                    // rules={[
-                    //     {
-                    //         required: true,
-                    //         message: '请输入上传活动图!',
-                    //     },
-                    // ]}
+                    rules={[
+                      {
+                        required: true,
+                        message: '请输入上传活动图!',
+                      },
+                    ]}
                   >
                     <Upload
                       name="multipartFile"
@@ -338,11 +348,11 @@ const FlowOne = forwardRef((props, ref) => {
                       beforeUpload={beforeUpload}
                       onChange={upPicfun.bind(this, 2)}
                     >
-                      {imgcont.thumbnailPictureUrl ? (
+                      {actdata.thumbnailPictureUrl ? (
                         <img
-                          src={imgcont.thumbnailPictureUrl}
+                          src={actdata.thumbnailPictureUrl}
                           alt="avatar"
-                          style={{ width: '100%' }}
+                          style={{ width: '102px', height: '102px' }}
                         />
                       ) : (
                         uploadButton2
