@@ -84,9 +84,7 @@ export default function (props) {
           {data.isDraft ? (
             <>
               <a onClick={() => editAndDetail(data.activityBasicId, 1)}>编辑</a>
-              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>
-                详情(测试用，等会删除)
-              </a>
+
               <a>删除</a>
             </>
           ) : activityStatus == 1 ? (

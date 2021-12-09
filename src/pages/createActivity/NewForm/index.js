@@ -89,11 +89,6 @@ const NewForm = forwardRef(({ actitemStatus, activityStatus, draft }, ref) => {
     form.resetFields();
   };
 
-  const aaa = async () => {
-    let formdata = await form.validateFields();
-    console.log('aaa', formdata);
-  };
-
   return (
     <div>
       <div className="Tablefilter2">
