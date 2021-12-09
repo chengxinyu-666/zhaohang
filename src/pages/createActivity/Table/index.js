@@ -83,18 +83,21 @@ export default function (props) {
         <>
           {data.isDraft ? (
             <>
-              <a onClick={() => edit(data.activityBasicId)}>编辑</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 1)}>编辑</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>
+                详情(测试用，等会删除)
+              </a>
               <a>删除</a>
             </>
           ) : activityStatus == 1 ? (
-            <a>详情</a>
+            <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
           ) : (
             ''
           )}
 
           {activityStatus == 2 ? (
             <>
-              <a>详情</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
               <a>关闭</a>
             </>
           ) : (
@@ -102,14 +105,14 @@ export default function (props) {
           )}
           {activityStatus == 3 ? (
             <>
-              <a>详情</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
             </>
           ) : (
             ''
           )}
           {activityStatus == 4 ? (
             <>
-              <a>详情</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
               <a>重新发布</a>
               <a>删除</a>
             </>
@@ -118,7 +121,7 @@ export default function (props) {
           )}
           {activityStatus == '5' ? (
             <>
-              <a>详情</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
               <a>删除</a>
             </>
           ) : (
@@ -126,7 +129,7 @@ export default function (props) {
           )}
           {activityStatus == '6' ? (
             <>
-              <a>详情</a>
+              <a onClick={() => editAndDetail(data.activityBasicId, 2)}>详情</a>
               <a>删除</a>
             </>
           ) : (
@@ -140,7 +143,8 @@ export default function (props) {
     },
   ];
 
-  const edit = (id) => {
+  // 详情和草稿共用一个接口
+  const editAndDetail = (id, iq) => {
     let data = {
       activityBasicId: id,
     };
@@ -155,11 +159,17 @@ export default function (props) {
             type: 'SWITCH_BACKFILL',
             backfill: res.data,
           });
-          history.push('/addActivity?activityBasicId=' + id);
+          // 判断去详情页还是去草稿页
+          iq == 1
+            ? history.push('/addActivity?activityBasicId=' + id)
+            : history.push('/details?activityBasicId=' + id);
         }
       });
 
     // history.push('/addActivity?activityBasicId=' + id);
+  };
+  const toDetail = (id) => {
+    console.log(7777777, id);
   };
 
   const handleChange = (pagination, filters, sorter) => {

@@ -1,0 +1,195 @@
+.detail_Inner {
+  padding: 25px;
+
+  h2 {
+    font-weight: 800;
+    font-size: 24px;
+    line-height: 60px;
+  }
+  .list_top {
+    padding-bottom: 30px;
+    ul {
+      display: flex;
+      align-items: center;
+
+      li {
+        a {
+          font-size: 16px;
+          color: black;
+          margin-right: 30px;
+          line-height: 30px;
+        }
+        .a_act {
+          font-size: 18px;
+          color: #142178;
+          font-weight: 600;
+          position: relative;
+        }
+        .a_act::before {
+          content: '';
+          display: inline-block;
+          width: 32px;
+          height: 4px;
+          border-radius: 5px;
+          background-color: #142178;
+          position: absolute;
+          bottom: -10px;
+          left: 19px;
+        }
+      }
+    }
+  }
+  .components {
+    .basicinfo {
+      ul {
+        li {
+          display: flex;
+          justify-content: space-between;
+          .mes {
+            line-height: 30px;
+            display: flex;
+            .name {
+              font-size: 17px;
+            }
+            .its {
+              color: #b4b4b4;
+              font-size: 16px;
+            }
+            .daily_plan {
+              .plan_item {
+                .its {
+                  margin-right: 20px;
+                }
+                .daily_jihua {
+                  font-size: 16px;
+                }
+              }
+            }
+          }
+          .shnhe {
+            color: #4fb4a5;
+          }
+          .jinxin {
+            color: #9c53fd;
+          }
+          .bohi {
+            color: #fe4d5c;
+          }
+          .jieshu {
+            color: #a0a0a0;
+          }
+        }
+      }
+    }
+  }
+  .detail_foot {
+    margin-top: 50px;
+    margin-left: 60px;
+  }
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
+  background-color: #f6f7ff;
+  border: none;
+  padding: 0;
+}
+
+//活动信息详情部分css
+
+.activeinfo {
+  .active_item {
+    .inner_action_item {
+      padding-bottom: 40px;
+    }
+    .item_top {
+      h2 {
+        font-size: 18px;
+        font-weight: 800;
+        padding-left: 15px;
+        line-height: 60px;
+        position: relative;
+      }
+      h2::before {
+        content: '';
+        width: 5px;
+        height: 20px;
+        display: inline-block;
+        background-color: #1a257a;
+        position: absolute;
+        top: 20px;
+        left: 0;
+      }
+    }
+    .item_box {
+      .p_txt {
+        padding-left: 15px;
+        line-height: 32px;
+        span {
+          margin-left: 20px;
+        }
+      }
+    }
+    .item_box_list {
+      ul {
+        padding-left: 15px;
+        padding-right: 100px;
+        display: flex;
+        // justify-content: space-between;
+        flex-wrap: wrap;
+        li {
+          a {
+            display: inline-block;
+            border: 1px solid #141f76;
+            padding: 5px 15px;
+            border-radius: 5px;
+            margin: 0 20px 10px 0;
+            color: #141f76;
+          }
+        }
+      }
+    }
+    .item_box_list2 {
+      display: flex;
+      align-items: center;
+
+      .item_name {
+        font-weight: 600;
+      }
+      .add_item {
+        display: flex;
+        flex-wrap: wrap;
+        span {
+          margin-right: 20px;
+        }
+      }
+    }
+    //投票对象的数据
+    .vote_list {
+      padding-left: 15px;
+
+      .item_j {
+        display: flex;
+        flex-wrap: wrap;
+        .item_j_left {
+          margin-top: 10px;
+          margin-bottom: 10px;
+          width: 50%;
+          line-height: 35px;
+
+          .item_name {
+            font-weight: 600;
+            margin-right: 10px;
+          }
+          .item_session {
+          }
+          .pic_item {
+            display: inline-block;
+            img {
+              width: 150px;
+              height: 150px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

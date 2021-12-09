@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:11:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-11-29 17:33:35
+ * @LastEditTime: 2021-12-09 09:57:29
  */
 import { defineConfig } from 'umi';
 
@@ -57,6 +57,12 @@ export default defineConfig({
           path: '/lotteryWhiteList',
           component: './lotteryWhiteList/index',
           title: '抽奖白名单',
+          auth: true,
+        },
+        {
+          path: '/details',
+          component: './details/index',
+          title: '活动详情',
           auth: true,
         },
       ],

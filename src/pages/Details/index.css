@@ -1,0 +1,159 @@
+.detail_Inner {
+  padding: 25px;
+}
+.detail_Inner h2 {
+  font-weight: 800;
+  font-size: 24px;
+  line-height: 60px;
+}
+.detail_Inner .list_top {
+  padding-bottom: 30px;
+}
+.detail_Inner .list_top ul {
+  display: flex;
+  align-items: center;
+}
+.detail_Inner .list_top ul li a {
+  font-size: 16px;
+  color: black;
+  margin-right: 30px;
+  line-height: 30px;
+}
+.detail_Inner .list_top ul li .a_act {
+  font-size: 18px;
+  color: #142178;
+  font-weight: 600;
+  position: relative;
+}
+.detail_Inner .list_top ul li .a_act::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 4px;
+  border-radius: 5px;
+  background-color: #142178;
+  position: absolute;
+  bottom: -10px;
+  left: 19px;
+}
+.detail_Inner .components .basicinfo ul li {
+  display: flex;
+  justify-content: space-between;
+}
+.detail_Inner .components .basicinfo ul li .mes {
+  line-height: 30px;
+  display: flex;
+}
+.detail_Inner .components .basicinfo ul li .mes .name {
+  font-size: 17px;
+}
+.detail_Inner .components .basicinfo ul li .mes .its {
+  color: #b4b4b4;
+  font-size: 16px;
+}
+.detail_Inner .components .basicinfo ul li .mes .daily_plan .plan_item .its {
+  margin-right: 20px;
+}
+.detail_Inner .components .basicinfo ul li .mes .daily_plan .plan_item .daily_jihua {
+  font-size: 16px;
+}
+.detail_Inner .components .basicinfo ul li .shnhe {
+  color: #4fb4a5;
+}
+.detail_Inner .components .basicinfo ul li .jinxin {
+  color: #9c53fd;
+}
+.detail_Inner .components .basicinfo ul li .bohi {
+  color: #fe4d5c;
+}
+.detail_Inner .components .basicinfo ul li .jieshu {
+  color: #a0a0a0;
+}
+.detail_Inner .detail_foot {
+  margin-top: 50px;
+  margin-left: 60px;
+}
+.ant-collapse-icon-position-right > .ant-collapse-item > .ant-collapse-header {
+  background-color: #f6f7ff;
+  border: none;
+  padding: 0;
+}
+.activeinfo .active_item .inner_action_item {
+  padding-bottom: 40px;
+}
+.activeinfo .active_item .item_top h2 {
+  font-size: 18px;
+  font-weight: 800;
+  padding-left: 15px;
+  line-height: 60px;
+  position: relative;
+}
+.activeinfo .active_item .item_top h2::before {
+  content: '';
+  width: 5px;
+  height: 20px;
+  display: inline-block;
+  background-color: #1a257a;
+  position: absolute;
+  top: 20px;
+  left: 0;
+}
+.activeinfo .active_item .item_box .p_txt {
+  padding-left: 15px;
+  line-height: 32px;
+}
+.activeinfo .active_item .item_box .p_txt span {
+  margin-left: 20px;
+}
+.activeinfo .active_item .item_box_list ul {
+  padding-left: 15px;
+  padding-right: 100px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.activeinfo .active_item .item_box_list ul li a {
+  display: inline-block;
+  border: 1px solid #141f76;
+  padding: 5px 15px;
+  border-radius: 5px;
+  margin: 0 20px 10px 0;
+  color: #141f76;
+}
+.activeinfo .active_item .item_box_list2 {
+  display: flex;
+  align-items: center;
+}
+.activeinfo .active_item .item_box_list2 .item_name {
+  font-weight: 600;
+}
+.activeinfo .active_item .item_box_list2 .add_item {
+  display: flex;
+  flex-wrap: wrap;
+}
+.activeinfo .active_item .item_box_list2 .add_item span {
+  margin-right: 20px;
+}
+.activeinfo .active_item .vote_list {
+  padding-left: 15px;
+}
+.activeinfo .active_item .vote_list .item_j {
+  display: flex;
+  flex-wrap: wrap;
+}
+.activeinfo .active_item .vote_list .item_j .item_j_left {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  width: 50%;
+  line-height: 35px;
+}
+.activeinfo .active_item .vote_list .item_j .item_j_left .item_name {
+  font-weight: 600;
+  margin-right: 10px;
+}
+.activeinfo .active_item .vote_list .item_j .item_j_left .pic_item {
+  display: inline-block;
+}
+.activeinfo .active_item .vote_list .item_j .item_j_left .pic_item img {
+  width: 150px;
+  height: 150px;
+}

@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-08 17:46:12
+ * @LastEditTime: 2021-12-09 16:12:25
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -198,8 +198,6 @@ export default function (props) {
           picarr: [...picarr],
         });
       }
-    } else {
-      message.error('数据错误，请联系管理员！');
     }
   }, []);
 

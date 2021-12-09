@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:42:04
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-08 16:15:38
+ * @LastEditTime: 2021-12-09 14:12:56
  */
 import React, { useState, useEffect, useRef, forwardRef } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -88,7 +88,7 @@ const FlowTwo = forwardRef((props, ref) => {
       <div className="item2">
         <Collapse
           bordered={false}
-          defaultActiveKey={['1']}
+          // defaultActiveKey={['1','2','3'] }  //控制默认展开，这块数据重新弄一下
           expandIcon={({ isActive }) => (
             <CaretRightOutlined
               style={{ color: '#50599b' }}

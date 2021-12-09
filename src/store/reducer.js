@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-07 15:14:20
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-08 10:20:24
+ * @LastEditTime: 2021-12-09 10:40:58
  */
 
 const initialState = {
@@ -10,7 +10,7 @@ const initialState = {
   current: '123123数据',
   tabledate: ['54', '43'],
   menulist: [],
-  backfill: [], //单条数据详情，用于回填
+  backfill: [], //单条数据详情，用于草稿回填以及详情页面
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export
