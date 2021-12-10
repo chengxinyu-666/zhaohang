@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-29 17:32:50
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 16:12:25
+ * @LastEditTime: 2021-12-10 17:12:36
  */
 import React, { useState, useEffect, useRef } from 'react';
 import FlowOne from './components/FlowOne/index';
@@ -94,7 +94,7 @@ export default function (props) {
         activityVOS, //活动数据
       } = { ...backfill };
       // 表单一（创建活动）的数据回显
-      let newSharr = scheduleVOS.map((item) => {
+      let newSharr = scheduleVOS?.map((item) => {
         return {
           scheduleName: item.scheduleName,
           scheduleDate: moment(item.scheduleDate),

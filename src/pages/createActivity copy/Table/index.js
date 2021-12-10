@@ -168,9 +168,6 @@ export default function (props) {
 
     // history.push('/addActivity?activityBasicId=' + id);
   };
-  const toDetail = (id) => {
-    console.log(7777777, id);
-  };
 
   const handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination.current, filters, sorter);

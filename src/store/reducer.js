@@ -2,8 +2,9 @@
  * @Author: chengxinyu
  * @Date: 2021-12-07 15:14:20
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 10:40:58
+ * @LastEditTime: 2021-12-10 17:35:01
  */
+import { SWITCH_TABLEDATE, SWITCH_BACKFILL } from './constant';
 
 const initialState = {
   menuName: '首页',
@@ -15,7 +16,7 @@ const initialState = {
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
-  console.log('action', action); // 使用dispatch调用action中的方法会触发更新state 获取到action之后根据type的不同来更改不同的值    类似于action:{type: "SWITCH_MEUN", menuName: "订单管理"}
+  // console.log('action', action); // 使用dispatch调用action中的方法会触发更新state 获取到action之后根据type的不同来更改不同的值    类似于action:{type: "SWITCH_MEUN", menuName: "订单管理"}
   switch (action.type) {
     case 'SWITCH_MEUN':
       return {

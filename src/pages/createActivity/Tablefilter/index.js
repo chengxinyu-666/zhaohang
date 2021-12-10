@@ -2,24 +2,13 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 19:11:33
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 18:22:11
+ * @LastEditTime: 2021-12-10 17:50:21
  */
 
 import NewForm from '../NewForm';
 import React, { Component } from 'react';
 import Table from '../Table';
 // import { CommonEnum } from '@/enums';
-import {
-  Form,
-  Input,
-  Button,
-  Select,
-  DatePicker,
-  Space,
-  Row,
-  Col,
-  message,
-} from 'antd';
 
 export default class Tablefilter extends Component {
   constructor(props) {
@@ -61,10 +50,6 @@ export default class Tablefilter extends Component {
     };
   }
   changeItem = (idx) => {
-    // if (cRef.current) {
-    //   cRef.current.getData();
-    // }
-
     if (idx == 0) {
       this.setState({
         ...this.state,
@@ -88,38 +73,14 @@ export default class Tablefilter extends Component {
       });
     }
   };
-  // static getDerivedStateFromProps(props, state) {
-  //   return null
-  // }
 
   static getDerivedStateFromError(error) {
     return {};
   }
 
-  //   static getSnapshotBeforeUpdate(prevProps, prevState) {
-
-  //  return
-  //   }
-
   componentDidCatch(error, errorInfo) {}
 
-  // UNSAFE_componentWillMount() {
-
-  // }
-
   componentDidMount() {}
-
-  // shouldComponentUpdate(nextProps, nextState) {
-
-  // }
-
-  // UNSAFE_componentWillReceiveProps(nextProps){
-
-  // }
-
-  // UNSAFE_componentWillUpdate(nextProps, nextState) {
-
-  // }
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 
@@ -149,7 +110,7 @@ export default class Tablefilter extends Component {
           <NewForm
             //  ref={cRef}
             draft={this.state.draft}
-            actitemStatus={this.state.actitem}
+            actitem={this.state.actitem}
             activityStatus={this.state.activityStatus}
           />
         </div>

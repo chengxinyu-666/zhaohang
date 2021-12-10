@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-09 10:50:38
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 16:15:05
+ * @LastEditTime: 2021-12-10 17:11:52
  */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -76,7 +76,7 @@ export default function (props) {
             <div className="mes">
               <span className="name">日程安排：</span>
               <div className="daily_plan">
-                {scheduleVOS.map((item, idx) => {
+                {scheduleVOS?.map((item, idx) => {
                   return (
                     <div className="plan_item" key={idx}>
                       <span className="its">{item.scheduleDate}</span>
