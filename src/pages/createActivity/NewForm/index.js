@@ -102,7 +102,7 @@ export default class Demo extends Component {
     console.log('更新传参', this.state.actitem);
     let data = {
       ...this.state.page,
-      activityStatus: [1],
+      // activityStatus: [ this.state.actitem],
       // isDraft: this.props.draft,
     };
 
@@ -165,9 +165,9 @@ export default class Demo extends Component {
         {this.state.actitem}
 
         <div className="Tablefilter2">
-          <Button onClick={() => console.log(55555555, this.state)}>
+          {/* <Button onClick={() => console.log(55555555, this.state)}>
             观察state的数据
-          </Button>
+          </Button> */}
           <Form
             ref={this.formRef}
             name="control-hooks"
