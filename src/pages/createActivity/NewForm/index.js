@@ -10,6 +10,7 @@ import {
   Row,
   Col,
   message,
+  Spin,
 } from 'antd';
 import Table from '../Table';
 
@@ -18,12 +19,6 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 import request from 'umi-request';
 import store from '@/store';
-//引入actionCreator，专门用于创建action对象
-import {
-  createTabledateAction,
-  createBackfillAction,
-} from '@/store/countAction';
-import * as actions from '@/store/countAction';
 
 export default class Demo extends Component {
   formRef = React.createRef();
@@ -33,10 +28,10 @@ export default class Demo extends Component {
     this.state = {
       loadding: false, //初始false，没拿到数据则不渲染下面表单
       page: CommonEnum.PAGE,
-      actitem: props.actitem,
+      actitem: 0,
       searchCriteria: {
         activityName: '', //活动名字
-        activityStatus: props.actitem, //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
+        // activityStatus: props.actitem, //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
         queryStartDate: '', //开始时间
         queryEndDate: '', //结束时间
         isDraft: props.draft, //是否草稿1-是0-否
@@ -45,15 +40,7 @@ export default class Demo extends Component {
     };
   }
 
-  // setTimeout(() => {
-  //   dispatch({
-  //     type: 'SWITCH_TABLEDATE',
-  //     tabledate: tabledate,
-  //   });
-  // }, 10);
-
   onFinish = (values) => {
-    // console.log('搜索', values, this.formRef);
     console.log('查看当前state数据', this.state);
     // this.formRef.current  是类组件的获取表单数据方法
     // if (!values.activename && !values.activetime) {
@@ -81,9 +68,10 @@ export default class Demo extends Component {
 
     this.setState({
       ...this.state,
+      activityStatus: 0,
       searchCriteria: {
         activityName: '', //活动名字
-        activityStatus: [], //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
+        // activityStatus: [], //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
         queryStartDate: '', //开始时间
         queryEndDate: '', //结束时间
         isDraft: props.draft, //是否草稿1-是0-否
@@ -111,9 +99,11 @@ export default class Demo extends Component {
   // 获取表单数据
   getFormdata = () => {
     //类组件里在componentDidMount生命周期找不到数据会导致浏览器进入死循环
+    console.log('更新传参', this.state.actitem);
     let data = {
       ...this.state.page,
-      // ...this.state.searchCriteria,
+      // activityStatus:[1],
+      isDraft: true,
     };
     request
       .post('/campus/campusweb/activity/pageConditionQueryByCreatorId', {
@@ -122,8 +112,6 @@ export default class Demo extends Component {
       .then((res) => {
         console.log(222222, res);
         if (res.code == 200) {
-          console.log('更新数据');
-
           this.setState({
             ...this.state,
             tabledate: { ...res.data },
@@ -134,7 +122,7 @@ export default class Demo extends Component {
           });
           // 更新所有数据 放入仓库
 
-          store.dispatch(createTabledateAction([res.data]));
+          // store.dispatch(createTabledateAction([res.data]));
         }
       })
       .catch((error) => {
@@ -149,15 +137,22 @@ export default class Demo extends Component {
 
   // }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    // this.getFormdata();
+    console.log(3455, nextProps, nextState);
+    return true;
+  }
+
   static getDerivedStateFromProps(props, state) {
     console.log('更新state的数据', props);
-
+    //  this.getFormdata();
     const { actitem } = props;
-    if (actitem !== state.searchCriteria.activityStatus) {
+    if (actitem !== state.actitem) {
       return {
         actitem,
       };
     }
+
     // 否则，对于state不进行任何操作
     return null;
   }
@@ -208,7 +203,9 @@ export default class Demo extends Component {
             tabledate={this.state.tabledate}
             actitem={this.state.actitem}
           ></Table>
-        ) : null}
+        ) : (
+          <Spin />
+        )}
       </div>
     );
   }

@@ -2,9 +2,8 @@
  * @Author: chengxinyu
  * @Date: 2021-12-07 15:14:20
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-10 17:35:01
+ * @LastEditTime: 2021-12-11 15:53:47
  */
-import { SWITCH_TABLEDATE, SWITCH_BACKFILL } from './constant';
 
 const initialState = {
   menuName: '首页',

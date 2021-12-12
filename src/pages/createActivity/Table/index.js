@@ -3,12 +3,6 @@ import { Table, Button, Space } from 'antd';
 import { history } from 'umi';
 import '../index.less';
 import request from 'umi-request';
-import store from '@/store';
-//引入actionCreator，专门用于创建action对象
-import {
-  createTabledateAction,
-  createBackfillAction,
-} from '@/store/countAction';
 
 export default class Demo extends Component {
   constructor(props) {
@@ -155,7 +149,6 @@ export default class Demo extends Component {
         align: 'center',
       },
     ];
-    //  this.dispatch = useDispatch();
   }
 
   // const dispatch = useDispatch();
@@ -177,12 +170,6 @@ export default class Demo extends Component {
       .then(function (res) {
         console.log('获取单挑数据', res);
         if (res.code == 200) {
-          // this.dispatch({
-          //   type: 'SWITCH_BACKFILL',
-          //   backfill: res.data,
-          // });
-          // 更新所有数据 放入仓库
-          store.dispatch(createBackfillAction(res.data));
           // 判断去详情页还是去草稿页
           iq == 1
             ? history.push('/addActivity?activityBasicId=' + id)
@@ -193,22 +180,15 @@ export default class Demo extends Component {
 
   handleChange = (pagination, filters, sorter) => {
     console.log('Various parameters', pagination.current, filters, sorter);
-    setState({
-      filteredInfo: filters,
-      sortedInfo: sorter,
-    });
+    // setState({
+    //   filteredInfo: filters,
+    //   sortedInfo: sorter,
+    // });
   };
 
   goAddactivity = () => {
     history.push('/addActivity');
   };
-
-  // const { tabledate } = props;
-  // console.log(77777777777,tabledate);
-
-  // static getDerivedStateFromProps(props, state) {
-
-  // }
 
   static getDerivedStateFromError(error) {
     return {};
@@ -217,18 +197,6 @@ export default class Demo extends Component {
   componentDidCatch(error, errorInfo) {}
 
   componentDidMount() {}
-
-  // shouldComponentUpdate(nextProps, nextState) {
-
-  // }
-
-  // UNSAFE_componentWillReceiveProps(nextProps){
-
-  // }
-
-  // UNSAFE_componentWillUpdate(nextProps, nextState) {
-
-  // }
 
   componentDidUpdate(prevProps, prevState, snapshot) {}
 

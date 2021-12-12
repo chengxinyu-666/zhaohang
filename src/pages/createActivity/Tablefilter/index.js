@@ -2,13 +2,12 @@
  * @Author: chengxinyu
  * @Date: 2021-11-25 19:11:33
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-10 17:50:21
+ * @LastEditTime: 2021-12-10 22:00:45
  */
 
 import NewForm from '../NewForm';
 import React, { Component } from 'react';
 import Table from '../Table';
-// import { CommonEnum } from '@/enums';
 
 export default class Tablefilter extends Component {
   constructor(props) {

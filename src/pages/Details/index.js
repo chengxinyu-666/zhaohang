@@ -2,36 +2,40 @@
  * @Author: chengxinyu
  * @Date: 2021-12-09 09:55:28
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 12:26:12
+ * @LastEditTime: 2021-12-11 16:47:01
  */
 
 import React, { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { message, Button, Form } from 'antd';
+import { message, Button, Form, Spin } from 'antd';
 import { useLocation } from 'umi';
 import ActiveInfo from './components/ActiveInfo';
 import BasicInfo from './components/BasicInfo';
 import { history } from 'umi';
+import { useHttpHook } from '@/hooks';
+import { useDispatch, useSelector } from 'react-redux';
 import './index.less';
 
 export default function (props) {
+  const dispatch = useDispatch();
   const location = useLocation(); //获取url地址参数
   const [choseitem, setChoseitem] = useState(0); //记录选项卡下标
 
-  const backfill = useSelector((state) => {
-    return state.backfill;
+  const [backfill] = useHttpHook({
+    url: '/activity/queryByUpdate',
+    body: {
+      activityBasicId: location.query.activityBasicId,
+    },
   });
 
-  useEffect(() => {
-    if (location.query.activityBasicId != backfill.activityBasicId) {
-      return message.error('数据错误，请联系管理员！');
-    }
-  }, []);
+  // const huancha = () => {
+  //   console.log('观察数据1', backfill);
+  // }
 
   const topList = ['基本信息', '活动信息'];
 
   return (
     <div>
+      {/* <Button onClick={huancha}>观察数据</Button> */}
       <div className="detail_Inner">
         <h2>详情</h2>
         <div className="list_top">
@@ -52,10 +56,18 @@ export default function (props) {
             })}
           </ul>
         </div>
+        {backfill ? (
+          <div className="components">
+            {choseitem == 0 ? (
+              <BasicInfo backfill={backfill} />
+            ) : (
+              <ActiveInfo backfill={backfill} />
+            )}
+          </div>
+        ) : (
+          <Spin />
+        )}
 
-        <div className="components">
-          {choseitem == 0 ? <BasicInfo /> : <ActiveInfo />}
-        </div>
         <div className="detail_foot">
           <Button onClick={() => history.go(-1)} type="primary">
             返回

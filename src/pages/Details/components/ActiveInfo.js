@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-12-09 10:50:52
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-09 16:10:08
+ * @LastEditTime: 2021-12-11 16:47:12
  */
 import React, { useState, useEffect } from 'react';
 import { Select, Collapse, Button } from 'antd';
@@ -13,21 +13,24 @@ const { Panel } = Collapse;
 import '../index.less';
 
 export default function (props) {
-  const backfill = useSelector((state) => {
-    return state.backfill;
-  });
+  // const backfill = useSelector((state) => {
+  //   return state.backfill;
+  // });
+
+  const { backfill } = props;
+
   const [signUpdate, setSignUpdate] = useState({}); //报名
   const [robticketsdate, setRobticketsdate] = useState({}); //抢票
   const [signindate, setSignindate] = useState({}); //签到
   const [votedate, setVotedate] = useState({}); //投票
   const [luckydate, setLuckydate] = useState({}); //抽奖
 
-  // console.log('仓库拿到的数据', backfill);
   const { isSignUp, isRobTickets, isSignIn, isVote, isLuckyDraw, activityVOS } =
     backfill;
 
   useEffect(() => {
-    console.log('活动数据', activityVOS);
+    console.log('活动数据', backfill);
+
     if (isSignUp) {
       let obj = activityVOS.filter((item) => item.activityType == 1);
       setSignUpdate({ ...obj[0] });
@@ -38,13 +41,8 @@ export default function (props) {
     }
   }, []);
 
-  const lookdata = () => {
-    console.log('观察数据', votedate);
-  };
-
   return (
     <div className="activeinfo">
-      <span onClick={lookdata}>观察数据</span>
       <Collapse
         bordered={false}
         defaultActiveKey={['1', '2']}

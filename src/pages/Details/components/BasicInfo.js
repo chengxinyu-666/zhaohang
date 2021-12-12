@@ -2,17 +2,18 @@
  * @Author: chengxinyu
  * @Date: 2021-12-09 10:50:38
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-10 17:11:52
+ * @LastEditTime: 2021-12-11 16:12:10
  */
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 export default function (props) {
-  const backfill = useSelector((state) => {
-    return state.backfill;
-  });
+  // const backfill = useSelector((state) => {
+  //   return state.backfill;
+  // });
+  const { backfill } = props;
 
-  //   console.log('仓库拿到的数据', backfill);
+  console.log('仓库拿到的数据', backfill);
   const {
     activityName,
     activityContent,
