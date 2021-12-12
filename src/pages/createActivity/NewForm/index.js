@@ -102,9 +102,10 @@ export default class Demo extends Component {
     console.log('更新传参', this.state.actitem);
     let data = {
       ...this.state.page,
-      // activityStatus:[1],
-      isDraft: true,
+      activityStatus: [1],
+      // isDraft: this.props.draft,
     };
+
     request
       .post('/campus/campusweb/activity/pageConditionQueryByCreatorId', {
         data,
@@ -137,11 +138,10 @@ export default class Demo extends Component {
 
   // }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    // this.getFormdata();
-    console.log(3455, nextProps, nextState);
-    return true;
-  }
+  // shouldComponentUpdate(nextProps, nextState) {
+  //   console.log(3455, nextProps, nextState);
+  //   return true;
+  // }
 
   static getDerivedStateFromProps(props, state) {
     console.log('更新state的数据', props);
@@ -165,6 +165,9 @@ export default class Demo extends Component {
         {this.state.actitem}
 
         <div className="Tablefilter2">
+          <Button onClick={() => console.log(55555555, this.state)}>
+            观察state的数据
+          </Button>
           <Form
             ref={this.formRef}
             name="control-hooks"
