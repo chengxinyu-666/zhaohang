@@ -19,6 +19,7 @@ import moment from 'moment';
 const { RangePicker } = DatePicker;
 import request from 'umi-request';
 import store from '@/store';
+import localStorage from 'redux-persist/es/storage';
 
 export default class Demo extends Component {
   formRef = React.createRef();
@@ -28,7 +29,7 @@ export default class Demo extends Component {
     this.state = {
       loadding: false, //初始false，没拿到数据则不渲染下面表单
       page: CommonEnum.PAGE,
-      actitem: 0,
+      actitem: '',
       searchCriteria: {
         activityName: '', //活动名字
         // activityStatus: props.actitem, //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
@@ -68,7 +69,7 @@ export default class Demo extends Component {
 
     this.setState({
       ...this.state,
-      activityStatus: 0,
+      activityStatus: '',
       searchCriteria: {
         activityName: '', //活动名字
         // activityStatus: [], //活动状态 1-待审核2-进行中3-未开始4-已驳回5，6-已结束
@@ -102,10 +103,17 @@ export default class Demo extends Component {
     console.log('更新传参', this.state.actitem);
     let data = {
       ...this.state.page,
-      // activityStatus: [ this.state.actitem],
-      // isDraft: this.props.draft,
+      activityStatus: [this.state.actitem],
+      isDraft: false,
     };
 
+    if (this.state.actitem == 0) {
+      delete data.activityStatus;
+    }
+    if (this.state.actitem == 5) {
+      data.isDraft = true;
+      delete data.activityStatus;
+    }
     request
       .post('/campus/campusweb/activity/pageConditionQueryByCreatorId', {
         data,
@@ -121,6 +129,7 @@ export default class Demo extends Component {
             ...this.state,
             loadding: true,
           });
+
           // 更新所有数据 放入仓库
 
           // store.dispatch(createTabledateAction([res.data]));
@@ -134,8 +143,13 @@ export default class Demo extends Component {
   componentWillUnmount() {}
   //这个周期弹出不安全报错
   // componentWillReceiveProps(nextProps) {
-  //   console.log(888, nextProps);
-
+  //   const { actitem } = nextProps;
+  //   if (actitem !== this.state.actitem) {
+  //     return {
+  //       actitem,
+  //     };
+  //   }
+  //   console.log(77777777777, nextProps);
   // }
 
   // shouldComponentUpdate(nextProps, nextState) {
@@ -144,10 +158,9 @@ export default class Demo extends Component {
   // }
 
   static getDerivedStateFromProps(props, state) {
-    console.log('更新state的数据', props);
-    //  this.getFormdata();
+    console.log('更新state的的数据', state);
     const { actitem } = props;
-    if (actitem !== state.actitem) {
+    if (props.actitem !== state.actitem) {
       return {
         actitem,
       };
@@ -157,7 +170,11 @@ export default class Demo extends Component {
     return null;
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.actitem !== this.props.actitem) {
+      this.getFormdata();
+    }
+  }
 
   render() {
     return (
@@ -165,9 +182,6 @@ export default class Demo extends Component {
         {this.state.actitem}
 
         <div className="Tablefilter2">
-          {/* <Button onClick={() => console.log(55555555, this.state)}>
-            观察state的数据
-          </Button> */}
           <Form
             ref={this.formRef}
             name="control-hooks"
