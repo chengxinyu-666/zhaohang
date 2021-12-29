@@ -2,7 +2,7 @@
  * @Author: chengxinyu
  * @Date: 2021-11-23 11:33:41
  * @LastEditors: chengxinyu
- * @LastEditTime: 2021-12-02 14:40:40
+ * @LastEditTime: 2021-12-29 10:59:25
  */
 /*
  * @Author: chengxinyu
@@ -36,7 +36,7 @@ export default function (props) {
         data,
       })
       .then(function (res) {
-        console.log(res);
+        console.log(res,111);
         if (res.code == 200) {
           cookie.set('user', res.data.userId);
           localStorage.setItem('userName', res.data.userName);
